@@ -1,0 +1,22 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_ACTU_PRES_MOVIMIENTO
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_NUM_PREST IN NUMBER,
+  v_FECHA IN DATE,
+  v_ID_ESTADO IN NUMBER
+)
+AS
+
+BEGIN
+
+	UPDATE PRES_MOVIMIENTO
+	SET FEC_DEVOLUCION = v_FECHA,
+	ID_ESTADO_PM = v_ID_ESTADO
+	WHERE  NU_AUTO_PRES_MOV = v_NUM_PREST;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

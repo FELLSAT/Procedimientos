@@ -1,0 +1,56 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_GUARDA_REEMP_MED
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_CODI_MED_ASIG IN VARCHAR2,
+  v_CODI_MED_REEMP IN VARCHAR2,
+  v_ID_HORARIO IN NUMBER,
+  v_ID_GRUPO IN NUMBER,
+  v_FECHA_REEMP IN DATE,
+  v_TXT_JUSTIFIC IN VARCHAR2
+)
+AS
+   v_temp NUMBER(1, 0) := 0;
+
+BEGIN
+
+   BEGIN
+      SELECT 1 INTO v_temp
+        FROM DUAL
+       WHERE EXISTS ( SELECT * 
+                      FROM R_MEDI_REEMP_HOGR 
+                       WHERE  CD_CODI_MED_ASIG_RMRH = v_CODI_MED_ASIG
+                                AND NU_AUTO_HOGR_RMRH = v_ID_HORARIO
+                                AND NU_AUTO_GRAP_RMRH = v_ID_GRUPO );
+   EXCEPTION
+      WHEN OTHERS THEN
+         NULL;
+   END;
+      
+   IF v_temp = 1 THEN
+    
+   BEGIN
+      UPDATE R_MEDI_REEMP_HOGR
+         SET CD_CODI_MED_REEMP_RMRH = v_CODI_MED_REEMP,
+             FE_FECH_REEMP_RMRH = v_FECHA_REEMP,
+             TXT_JUSTIFICANTE_RMRH = v_TXT_JUSTIFIC
+       WHERE  CD_CODI_MED_ASIG_RMRH = v_CODI_MED_ASIG
+        AND NU_AUTO_HOGR_RMRH = v_ID_HORARIO
+        AND NU_AUTO_GRAP_RMRH = v_ID_GRUPO;
+   
+   END;
+   ELSE
+   
+   BEGIN
+      INSERT INTO R_MEDI_REEMP_HOGR
+        ( CD_CODI_MED_ASIG_RMRH, CD_CODI_MED_REEMP_RMRH, NU_AUTO_HOGR_RMRH, NU_AUTO_GRAP_RMRH, FE_FECH_REEMP_RMRH, TXT_JUSTIFICANTE_RMRH )
+        VALUES ( v_CODI_MED_ASIG, v_CODI_MED_REEMP, v_ID_HORARIO, v_ID_GRUPO, TO_DATE(v_FECHA_REEMP,'dd/mm/yyyy'), v_TXT_JUSTIFIC );
+   
+   END;
+   END IF;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

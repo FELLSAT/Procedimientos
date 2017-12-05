@@ -1,0 +1,26 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_REC_R_CTREF_HIST
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+
+(
+  v_NU_NUME_PLHI_RPC_ROM IN NUMBER,
+  v_NU_NUME_COHI_RPC IN NUMBER,
+  v_NUM_GRUPO_PADRE IN NUMBER,
+  cv_1 OUT SYS_REFCURSOR
+)
+AS
+
+BEGIN
+
+   OPEN  cv_1 FOR
+      SELECT NOM_COMP_OR_CONTRAREF 
+        FROM R_PLAN_CON_OR_CONTRAREF 
+       WHERE  NU_NUME_PLHI_RPC_ROM = v_NU_NUME_PLHI_RPC_ROM
+                AND NU_NUME_COHI_RPC = v_NU_NUME_COHI_RPC
+                AND NUM_GRUPO_PADRE = v_NUM_GRUPO_PADRE ;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

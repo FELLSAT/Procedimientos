@@ -1,0 +1,21 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_CONS_PAC_CAMA
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_CodCAMA IN VARCHAR2 DEFAULT NULL ,
+  cv_1 OUT SYS_REFCURSOR
+)
+AS
+
+BEGIN
+
+	OPEN  cv_1 FOR
+		SELECT NU_HIST_PAC 
+		FROM PACIENTES 
+		WHERE  CD_CODI_CAM_PAC = NVL(v_CodCAMA, CD_CODI_CAM_PAC) ;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

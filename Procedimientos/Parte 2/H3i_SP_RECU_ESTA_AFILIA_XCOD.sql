@@ -1,0 +1,23 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_RECU_ESTA_AFILIA_XCOD
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_CD_CODI_ESAF IN VARCHAR2,
+  cv_1 OUT SYS_REFCURSOR
+)
+AS
+
+BEGIN
+
+   OPEN  cv_1 FOR
+      SELECT CD_CODI_ESAF ,
+             DE_DESCRIP_ESAF ,
+             NU_ESTADO_ESAF 
+        FROM ESTADOS_AFILIACION 
+       WHERE  CD_CODI_ESAF = v_CD_CODI_ESAF ;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END H3i_SP_RECU_ESTA_AFILIA_XCOD;

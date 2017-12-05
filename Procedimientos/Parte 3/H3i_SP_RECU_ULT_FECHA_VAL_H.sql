@@ -1,0 +1,24 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_RECU_ULT_FECHA_VAL_H
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_HISTORIA IN VARCHAR2,
+  cv_1 OUT SYS_REFCURSOR
+)
+AS
+
+BEGIN
+
+   OPEN  cv_1 FOR
+      SELECT * 
+        FROM ( SELECT FECHA_VAL_CONSENT_AHC 
+        FROM AUDI_HUELLA_CONSENT 
+       WHERE  NU_HIST_PAC_AHC = v_HISTORIA
+        ORDER BY FECHA_VAL_CONSENT_AHC DESC )
+        WHERE ROWNUM <= 1 ;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END H3i_SP_RECU_ULT_FECHA_VAL_H;

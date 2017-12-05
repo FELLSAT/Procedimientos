@@ -1,0 +1,31 @@
+CREATE TABLE SPTYT.ALT_NPOSM
+(
+  NU_AUTO_ALTN       NUMBER(10)                 NOT NULL,
+  NU_AUTO_NOPM_ALTN  NUMBER(10)                 NOT NULL,
+  NU_ORDEN_ALTN      NUMBER(10)                 NOT NULL,
+  TX_PRINCIP_ALTN    VARCHAR2(100),
+  TX_TIEMUTI_ALTN    VARCHAR2(40),
+  TX_DOSIS_ALTN      VARCHAR2(20),
+  NU_NOMEJOR_ALTN    NUMBER(1)                  DEFAULT (0),
+  NU_REACADV_ALTN    NUMBER(1)                  DEFAULT (0),
+  NU_INTOLER_ALTN    NUMBER(1)                  DEFAULT (0),
+  TX_POSOLOGIA       VARCHAR2(50 CHAR),
+  TX_PRESENT         VARCHAR2(100 CHAR)
+)
+TABLESPACE USERS
+PCTUSED    0
+PCTFREE    10
+INITRANS   1
+MAXTRANS   255
+STORAGE    (
+            INITIAL          64K
+            NEXT             1M
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+           )
+LOGGING 
+NOCOMPRESS 
+NOCACHE
+MONITORING;

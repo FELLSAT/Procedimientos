@@ -1,0 +1,22 @@
+CREATE OR REPLACE PROCEDURE QyR3i_SP_REC_PARAMETRIZACION
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  cv_1 OUT SYS_REFCURSOR
+)
+AS
+
+BEGIN
+
+	OPEN  cv_1 FOR
+		SELECT CD_CONC_CONT ,
+			DE_DESC_CONT ,
+			VL_VALO_CONT 
+		FROM  CONTROL 
+		WHERE  CD_CONC_CONT = 'QyR3i-ID_PERFIL_CORREO' ;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

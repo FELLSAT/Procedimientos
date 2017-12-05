@@ -1,0 +1,21 @@
+CREATE OR REPLACE VIEW V_PLANCONCHC1
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+AS 
+     SELECT CONCEPTO_HIST.NU_TIPO_COHI ,
+          R_PLAN_CONC.NU_NUME_PLHI_RPC ,
+          CONCEPTO_HIST.CD_CODI_COHI ,
+          R_PLAN_CONC.NU_INGR_RPC ,
+          R_PLAN_CONC.NU_INDI_RPC ,
+          CONCEPTO_HIST.TX_TITULO_COHI ,
+          R_PLAN_CONC.NU_TOP_RPC ,
+          R_PLAN_CONC.NU_LEFT_RPC ,
+          R_PLAN_CONC.NU_HEIGHT_RPC ,
+          R_PLAN_CONC.NU_WIDTH_RPC ,
+          R_PLAN_CONC.NU_NUME_GRHI_RPC ,
+          R_PLAN_CONC.NU_VISIBLE_RPC 
+     FROM R_PLAN_CONC 
+     INNER JOIN CONCEPTO_HIST    
+          ON R_PLAN_CONC.NU_NUME_COHI_RPC = CONCEPTO_HIST.NU_NUME_COHI
+     ORDER BY R_PLAN_CONC.NU_INDI_RPC;

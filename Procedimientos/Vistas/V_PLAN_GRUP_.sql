@@ -1,0 +1,20 @@
+CREATE OR REPLACE VIEW V_PLAN_GRUP_
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+AS 
+     SELECT NU_NUME_PLHI_RPG, NU_INDI_RPG ,
+          CD_CODI_GRHI, TX_TITULO_GRHI ,
+          NU_NUME_GRHI_RPG, NU_INGR_RPG ,
+          NU_NUGR_RPG, NU_TOP_RPG,
+          NU_LEFT_RPG, NU_HEIGHT_RPG ,
+          NU_WIDTH_RPG, NU_INDIDEP_RPC_RPG ,
+          NU_INVACTASO_RPG, TX_BORDES_RPG ,
+          TX_hxCOLORROTULO_RPG, TX_hxCOLORLETRA_RPG ,
+          NU_ROTULOTOTALANCHO_RPG, NU_ALINEAROTULO_RPG ,
+          NU_TAMFUENTE_RPG, NU_ROTULOPERPEN_RPG ,
+          NU_ROTULOVISIBLE_RPG, NU_NEGRILLA_RPG ,
+          NU_ALINEAROTULOVERTICAL_RPG, NU_NUME_GRHI 
+     FROM R_PLAN_GRUP 
+     INNER JOIN GRUPO_HIST    
+         ON NU_NUME_GRHI_RPG = NU_NUME_GRHI;

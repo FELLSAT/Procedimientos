@@ -1,0 +1,31 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_AUDITCONSULTACATALOGMED
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- ============================================= 
+(
+  v_CODIGO IN VARCHAR2,
+  cv_1 OUT SYS_REFCURSOR
+)
+AS
+
+BEGIN
+
+    OPEN  cv_1 FOR
+        SELECT COD_CATAL_MED ,
+            NUM_CEDULA_MEDICO_AUCM ,
+            NO_NOMBRE_MEDICO_AUCM ,
+            PROF_ESPECIALID_AUCM ,
+            REGISTRO_MEDICO_AUCM ,
+            GRADO_PROFESIONAL_AUCM ,
+            TIPO_VINCULACION_AUCM ,
+            TELEFONO_AUCM ,
+            CORREO_ELECTRON_AUCM ,
+            CODIGO_OTRO_ESM_AUCM ,
+            OBSERVACIONES_AUCM 
+        FROM AUDITAR_CATALOGO_MEDICO 
+        WHERE  NUM_CEDULA_MEDICO_AUCM = v_CODIGO ;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

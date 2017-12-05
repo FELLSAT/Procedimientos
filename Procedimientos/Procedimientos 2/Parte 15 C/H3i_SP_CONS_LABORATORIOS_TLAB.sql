@@ -1,0 +1,23 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_CONS_LABORATORIOS_TLAB
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  cv_1 OUT SYS_REFCURSOR
+)
+AS
+
+BEGIN
+
+	OPEN  cv_1 FOR
+		SELECT CD_AUTO_LAB ,
+			NOMBRE_LAB ,
+			CANTIDAD_LAB ,
+			HORA_INI_ATEN_LAN ,
+			HORA_FIN_ATEN_LAB 
+		FROM LABORATORIO_LAB  ;
+
+EXCEPTION 
+	    WHEN OTHERS 
+	        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

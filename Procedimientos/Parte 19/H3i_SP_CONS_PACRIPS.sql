@@ -1,0 +1,54 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_CONS_PACRIPS
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- ============================================= 
+(
+  v_FECHAINICIAL IN DATE,
+  v_FECHAFINAL IN DATE,
+  v_CODIGOSLUGARES IN VARCHAR2,
+  cv_1 OUT SYS_REFCURSOR
+)
+AS
+
+BEGIN
+
+    --1 CONSULTANDO PACIENTES
+    OPEN  cv_1 FOR
+        SELECT CD_NIT_EPS_CONV ,
+            NO_NOMB_EPS ,
+            P.NU_HIST_PAC HISPAC  ,
+            MOSTRARTIPODOCUMENTO(P.NU_TIPD_PAC) TIPO_INDENTIFICACION_USU  ,
+            P.NU_DOCU_PAC NÚMERO_IDENTIFICACIÓN  ,
+            CD_CODI_EPS CODIGO_ADMINISTRADORA  ,
+            DE_PRAP_PAC PRIMER_APELLIDO  ,
+            DE_SGAP_PAC SEGUNDO_APELLIDO  ,
+            NO_NOMB_PAC PRIMER_NOMBRE  ,
+            NO_SGNO_PAC SEGUNDO_NOMBRE  ,
+            CalcularEdad(P.FE_NACI_PAC, FECHAATEN, 0) EDAD  ,
+            CalcularEdad(P.FE_NACI_PAC, FECHAATEN, 1) UNIDAD_MEDIDA_DE_EDAD  ,
+            CASE NU_SEXO_PAC
+                WHEN 0 THEN 'M'   
+            END SEXO  ,
+            p.CD_CODI_DPTO_PAC CÓDIGO_DEPART_RESIDENCIA  ,
+            P.CD_CODI_MUNI_PAC CÓDIGO_MUNICIPIO_RESIDENCIA  ,
+            P.CD_CODI_ZORE_PAC ZONA_DE_RESIDENCIA  
+        FROM MOVI_CARGOS 
+        INNER JOIN PACIENTES P   
+            ON NU_HIST_PAC = NU_HIST_PAC_MOVI
+        INNER JOIN( SELECT NU_HIST_PAC_MOVI HIST  ,
+                        MIN(FE_FECH_MOVI)  FECHAATEN  
+                    FROM MOVI_CARGOS 
+                    GROUP BY NU_HIST_PAC_MOVI ) TP   
+            ON HIST = NU_HIST_PAC
+        INNER JOIN CONVENIOS    
+            ON NU_NUME_CONV_MOVI = NU_NUME_CONV
+        INNER JOIN EPS    
+            ON CD_NIT_EPS = CD_NIT_EPS_CONV
+        WHERE  NU_TIPO_MOVI IN ( 0,2,3,4 )
+          AND NU_ESTA_MOVI <> 2
+          AND FE_FECH_MOVI BETWEEN v_FECHAINICIAL AND v_FECHAFINAL ;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

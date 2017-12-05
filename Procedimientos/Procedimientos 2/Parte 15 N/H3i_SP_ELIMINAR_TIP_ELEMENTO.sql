@@ -1,0 +1,18 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_ELIMINAR_TIP_ELEMENTO
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_ID_TIP_ELEMENTO IN NUMBER
+)
+AS
+
+BEGIN
+
+   	DELETE PRES_TIP_ELEMENTO
+    WHERE  ID_TIP_ELEMENTO = v_ID_TIP_ELEMENTO;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

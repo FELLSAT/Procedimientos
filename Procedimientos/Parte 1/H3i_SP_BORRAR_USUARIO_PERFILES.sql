@@ -1,0 +1,19 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_BORRAR_USUARIO_PERFILES
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_USUARIO IN VARCHAR2
+)
+AS
+
+BEGIN
+
+   DELETE USUARIO_PERFIL
+
+    WHERE  ID_IDEN_USUA = v_USUARIO;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END H3i_SP_BORRAR_USUARIO_PERFILES;

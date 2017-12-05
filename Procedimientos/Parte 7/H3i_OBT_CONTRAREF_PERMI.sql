@@ -1,0 +1,32 @@
+CREATE OR REPLACE PROCEDURE H3i_OBT_CONTRAREF_PERMI
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_NUMLABO IN NUMBER,
+  cv_1 OUT SYS_REFCURSOR
+)
+AS
+
+BEGIN
+
+   OPEN  cv_1 FOR
+      SELECT NU_IF_AGUDEZA ,
+             NU_IF_OFTALMOSCOPIA ,
+             NU_IF_RESTESTATICA ,
+             NU_IF_RESTDINAMICA ,
+             NU_IF_SUBJETIVO ,
+             NU_IF_CICOPLEJIA ,
+             NU_IF_BIOMIOCROSCOPIA ,
+             NU_IF_QUERATOMETRIA ,
+             NU_IF_DXCONTRA ,
+             NU_IF_ANAMNESISCONTRA ,
+             NU_IF_PRESCRIPCION 
+        FROM HISTORIACLINICA HC
+               INNER JOIN PLANTILLA_HIST_EXTEND PHE   ON HC.NU_NUME_PLHI_HICL = PHE.NU_NUME_PLHI_PLEX
+       WHERE  HC.NU_NUME_LABO_HICL = v_NUMLABO ;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

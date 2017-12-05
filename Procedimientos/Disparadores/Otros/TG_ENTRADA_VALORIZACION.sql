@@ -1,0 +1,61 @@
+CREATE OR REPLACE TRIGGER TG_ENTRADA_VALORIZACION 
+AFTER INSERT
+ON R_ENTRA_ARTI
+FOR EACH ROW
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+DECLARE
+	V_CODARTI VARCHAR2(16);
+	V_FECHAIN DATE; 
+	V_CODENTRADA NUMBER;
+	V_EXISTALMA NUMBER;
+	V_EXISTDEPE NUMBER;
+	V_CPANT NUMBER;
+	V_CP NUMBER;
+	V_VALVALORIZA NUMBER;
+	V_VALCOUNANT NUMBER;
+	V_VALCOUN NUMBER;
+	V_CANTARTI NUMBER;
+BEGIN 
+	SELECT :NEW.CD_ENTR_ENAR, :NEW.CD_ARTI_ENAR, 
+		:NEW.CT_CANT_ENAR, :NEW.VL_COUN_ENAR
+	INTO V_CODENTRADA, V_CODARTI,
+		V_CANTARTI, V_VALCOUN
+	FROM DUAL;
+	------------------------------------------------------
+	SELECT CT_EXIS_ARTI, VL_COPR_ARTI, 
+		VL_ULCO_ARTI 
+	INTO V_EXISTALMA, V_CPANT,
+		V_VALCOUNANT
+	FROM ARTICULO 
+	WHERE CD_CODI_ARTI = V_CODARTI;
+	------------------------------------------------------
+	SELECT NVL(SUM(CT_EXIS_DEAR), 0)
+	INTO V_EXISTDEPE
+	FROM R_DEPE_ARTI 
+	WHERE CD_ARTI_DEAR = V_CODARTI;
+	------------------------------------------------------
+	V_CP := V_CPANT;
+	------------------------------------------------------
+	IF (((V_EXISTALMA + V_EXISTDEPE) + V_CANTARTI) <> 0) THEN
+		BEGIN
+	  		V_CP := (((V_EXISTALMA + V_EXISTDEPE) * V_CP) + (V_CANTARTI * V_VALCOUN)) / ((V_EXISTALMA + V_EXISTDEPE) + V_CANTARTI);
+	  		------------------------------------------------------
+			V_FECHAIN := SYSDATE;
+		END;
+	END IF;
+
+	IF (V_VALCOUN <> V_CP ) THEN
+		BEGIN
+			INSERT INTO VALORIZAINV(
+				CD_ARTI_VAIN, FE_FECH_VAIN, 
+				CD_ENTR_VAIN, CT_EXIS_VAIN, 
+				VL_CPANT_VAIN, VL_VALO_VAIN)
+         	VALUES(
+         		V_CODARTI, V_FECHAIN, 
+         		V_CODENTRADA, V_EXISTALMA, 
+         		V_CPANT, (V_CP - V_CPANT));
+		END;
+    END IF;
+END;

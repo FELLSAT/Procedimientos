@@ -1,0 +1,23 @@
+CREATE OR REPLACE PROCEDURE H3i_GUARD_REPUESTA_REQUISICION
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+    V_CD_CODI_REQU_RMED IN NUMBER,
+    V_MENSAJE IN VARCHAR2
+)
+
+AS
+BEGIN
+    UPDATE HL7_CONTROL
+    SET 
+        ENTREGADO = 1,
+        FECHA_RESPUESTA = SYSDATE,
+        MENSAJE_RESPUESTA = V_MENSAJE
+    WHERE 
+        CD_CODI_REQU_RMED = V_CD_CODI_REQU_RMED;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);    
+END;

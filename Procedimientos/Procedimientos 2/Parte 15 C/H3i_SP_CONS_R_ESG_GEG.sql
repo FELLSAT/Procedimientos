@@ -1,0 +1,21 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_CONS_R_ESG_GEG
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  	v_CODIGOGENERAL IN VARCHAR2,
+  	cv_1 OUT SYS_REFCURSOR
+)
+AS
+
+BEGIN
+
+	OPEN  cv_1 FOR
+		SELECT TX_CODIGO_ESGL_REG 
+		FROM R_ESG_GEG 
+		WHERE  TX_CODIGO_GEGL_REG = v_CODIGOGENERAL ;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

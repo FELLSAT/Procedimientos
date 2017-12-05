@@ -1,0 +1,38 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_CREAR_INDICADOR
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_CD_CODI_INDI IN CHAR,
+  v_TX_NOMBRE_INDI IN VARCHAR2,
+  v_NU_ESTADO_INDI IN NUMBER,
+  v_NU_MODULO_INDI IN NUMBER,
+  v_TX_FORMU_INDI IN VARCHAR2,
+  cv_1 OUT SYS_REFCURSOR
+)
+AS
+
+BEGIN
+
+   
+    BEGIN
+        INSERT INTO INDICADOR( 
+            CD_CODI_INDI, TX_NOMBRE_INDI, 
+            NU_ESTADO_INDI, NU_MODULO_INDI, 
+            TX_FORMU_INDI )
+        VALUES ( 
+            v_CD_CODI_INDI, v_TX_NOMBRE_INDI, 
+            v_NU_ESTADO_INDI, v_NU_MODULO_INDI, 
+            v_TX_FORMU_INDI );
+
+    END;
+
+    OPEN  cv_1 FOR
+        SELECT NU_AUTO_INDI 
+        FROM INDICADOR
+        WHERE NU_AUTO_INDI = (SELECT MAX(NU_AUTO_INDI) FROM INDICADOR);
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

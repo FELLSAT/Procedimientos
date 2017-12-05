@@ -1,0 +1,31 @@
+CREATE OR REPLACE VIEW V_PLANCONVALID
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+AS 
+    SELECT 
+        R_PLAN_CONC.NU_NUME_PLHI_RPC plantilla  ,
+        R_PLAN_CONC.NU_INDI_RPC orden_dato  ,
+        R_PLAN_CONC.NU_NUME_COHI_RPC cod_dato  ,
+        CONCEPTO_HIST.CD_CODI_COHI dato  ,
+        R_PLAN_CONC.NU_INGR_RPC ingrupo  ,
+        R_PLAN_CONC.NU_NUME_GRHI_RPC id_grupo  ,
+        CONCEPTO_HIST.TX_TITULO_COHI titulo  ,
+        VALCONC_HIST1.NU_APLI_VAHI1 sexo  ,
+        VALCONC_HIST1.NU_OBLI_VAHI1 obligatorio  ,
+        VALCONC_HIST1.NU_EPIC_VAHI1 espicrisis  ,
+        VALCONC_HIST1.NU_ANTE_VAHI1 antecedente  ,
+        VALCONC_HIST2.NU_LONG_VAHI2 longitud  ,
+        VALCONC_HIST1.DE_TEMIN_VAHI1 edadini  ,
+        VALCONC_HIST1.DE_TEMAX_VAHI1 edadfin  ,
+        VALCONC_HIST2.DE_VDEF_VAHI2 valordefect  ,
+        R_PLAN_CONC.NU_EDITA_RPC editable  
+    FROM R_PLAN_CONC 
+    INNER JOIN CONCEPTO_HIST    
+          ON R_PLAN_CONC.NU_NUME_COHI_RPC = CONCEPTO_HIST.NU_NUME_COHI
+    INNER JOIN VALCONC_HIST1    
+        ON CONCEPTO_HIST.NU_NUME_COHI = VALCONC_HIST1.NU_NUME_COHI_VAHI1
+        AND R_PLAN_CONC.NU_NUME_PLHI_RPC = VALCONC_HIST1.NU_NUME_PLHI_VAHI1
+    LEFT JOIN VALCONC_HIST2    
+        ON CONCEPTO_HIST.NU_NUME_COHI = VALCONC_HIST2.NU_NUME_COHI_VAHI2
+        AND R_PLAN_CONC.NU_NUME_PLHI_RPC = VALCONC_HIST2.NU_NUME_PLHI_VAHI2;

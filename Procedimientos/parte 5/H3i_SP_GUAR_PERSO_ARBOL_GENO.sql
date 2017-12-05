@@ -1,0 +1,51 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_GUAR_PERSO_ARBOL_GENO -- CREANDO PROCEDIMIENTO ENCARGADO DE GUARDAR UNA PERSONA QUE CONFORMA EL GENOGRAMA
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_NU_NUME_PER IN NUMBER,
+  v_NU_NUME_ARB IN NUMBER,
+  v_POS_X IN NUMBER,
+  v_POS_Y IN NUMBER
+)
+AS
+   v_temp NUMBER(1, 0) := 0;
+
+BEGIN
+
+   BEGIN
+      SELECT 1 INTO v_temp
+        FROM DUAL
+       WHERE ( SELECT COUNT(NU_NUME_PERS)  
+               FROM HIST_GENO_PERSONA_ARBOL 
+                WHERE  NU_NUME_PERS = v_NU_NUME_PER
+                         AND NU_NUME_ARBOL = v_NU_NUME_ARB ) = 0;
+   EXCEPTION
+      WHEN OTHERS THEN
+         NULL;
+   END;
+      
+   IF v_temp = 1 THEN
+    
+   BEGIN
+      INSERT INTO HIST_GENO_PERSONA_ARBOL
+        ( NU_NUME_ARBOL, NU_NUME_PERS, NU_POSX, NU_POSY )
+        VALUES ( v_NU_NUME_ARB, v_NU_NUME_PER, v_POS_X, v_POS_Y );
+   
+   END;
+   ELSE
+   
+   BEGIN
+      UPDATE HIST_GENO_PERSONA_ARBOL
+         SET NU_POSX = v_POS_X,
+             NU_POSY = v_POS_Y
+       WHERE  NU_NUME_PERS = v_NU_NUME_PER
+        AND NU_NUME_ARBOL = v_NU_NUME_ARB;
+   
+   END;
+   END IF;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

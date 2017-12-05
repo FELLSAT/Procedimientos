@@ -1,0 +1,21 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_OBTENER_TIPO_EVENTO_ADV
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  cv_1 OUT SYS_REFCURSOR
+)
+AS
+
+BEGIN
+
+   OPEN  cv_1 FOR
+      SELECT * 
+        FROM TIPO_EVENTO_ADVERSO 
+       WHERE  NUM_SECUENCIA_PADRE IS NULL
+        ORDER BY NUM_SECUENCIA ;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END H3i_SP_OBTENER_TIPO_EVENTO_ADV;

@@ -1,0 +1,67 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_RPT_ACTIVI_GRUPAL
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_IDCITA IN NUMBER,
+  cv_1 OUT SYS_REFCURSOR
+)
+AS
+   v_FECHA_CITA DATE;
+   v_MEDICO VARCHAR2(10);
+
+BEGIN
+
+    SELECT FE_FECH_CIT 
+    INTO v_FECHA_CITA
+    FROM CITAS_MEDICAS 
+    WHERE  NU_NUME_CIT = v_IDCITA;
+
+
+    SELECT CD_CODI_MED_CIT 
+    INTO v_MEDICO
+    FROM CITAS_MEDICAS 
+    WHERE  NU_NUME_CIT = v_IDCITA;
+
+    OPEN  cv_1 FOR
+      SELECT NO_NOMB_SER SERVICIO  ,
+             NO_NOMB_MED MEDICO  ,
+             NU_TIPD_PAC TIPO_DOC  ,
+             NU_DOCU_PAC NUM_DOC  ,
+             TX_NOMBRECOMPLETO_PAC PACIENTE  ,
+             TX_NOMB_PA PROGR_ACADEMICO  ,
+             DE_DESC_DEPE DEPENDENCIA  ,
+             NVL(NU_NUME_MATR_PAU, 0) MATRICULA  ,
+             NU_SEXO_PAC GENERO  ,
+             TO_CHAR(SYSDATE,'YYYY') - TO_CHAR(FE_NACI_PAC,'YYYY') NACIMIENTO,             
+             DE_DESC_LOC LOCALIDAD  ,
+             TX_TELRESP_PAC TELEFONO  ,
+             DE_EMAIL_PAC EMAIL  ,
+             FE_FECH_CIT FECHA  ,
+             CASE NU_ESTA_CIT
+                             WHEN 0 THEN 'Asignada'
+                             WHEN 1 THEN 'Asistio'
+                             WHEN 2 THEN 'No_Asistio'
+             ELSE 'Sin_definir'
+                END ESTADO  ,
+             ESPECIALIDADES.NO_NOMB_ESP ESPECIALIDAD  
+        FROM CITAS_MEDICAS 
+               INNER JOIN SERVICIOS    ON CD_CODI_SER_CIT = CD_CODI_SER
+               INNER JOIN MEDICOS    ON CD_CODI_MED_CIT = CD_CODI_MED
+               LEFT JOIN PACIENTES    ON NU_HIST_PAC_CIT = NU_HIST_PAC
+               LEFT JOIN PACIENTES_ANEXO_UNAL    ON NU_HIST_PAC = NU_HIST_PAC_PAU
+               LEFT JOIN PROGRAMA_ACADEMICO    ON CD_CODI_PA_PAU = CD_CODI_PA
+               LEFT JOIN DEPENDENCIA    ON CD_CODI_DEPE_PAU = CD_CODI_DEPE
+               LEFT JOIN LOCALIDADES    ON CD_CODI_LOC_PAC = CD_CODI_LOC
+               INNER JOIN R_ESP_SER    ON CD_CODI_SER_RES = CD_CODI_SER
+               INNER JOIN ESPECIALIDADES    ON CD_CODI_ESP_RES = CD_CODI_ESP
+               AND CD_CODI_ESP_CIT = CD_CODI_ESP -- se aumenta esta ultima condicion para que se filtre solo a la especialidad de la cita
+
+       WHERE  CD_CODI_MED_CIT = v_MEDICO
+                AND FE_FECH_CIT = v_FECHA_CITA
+        GROUP BY NO_NOMB_SER,NO_NOMB_MED,NU_DOCU_PAC,NU_TIPD_PAC,TX_NOMBRECOMPLETO_PAC,TX_NOMB_PA,DE_DESC_DEPE,NU_NUME_MATR_PAU,NU_SEXO_PAC,FE_NACI_PAC,DE_DESC_LOC,TX_TELRESP_PAC,DE_EMAIL_PAC,FE_FECH_CIT,NU_ESTA_CIT,NO_NOMB_ESP ;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

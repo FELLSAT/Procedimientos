@@ -1,0 +1,46 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_GUARDAR_MENSAJE_HL7_DFT
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+    V_MENSAJE IN VARCHAR2, 
+    V_IDENTITY_MESSAGE IN VARCHAR2,
+    V_NU_NUME_FACO IN NUMBER DEFAULT NULL,
+    V_NU_NUME_MOVI IN NUMBER DEFAULT  NULL,
+    V_RETORNA_RESPUESTA IN NUMBER DEFAULT  0,
+    V_FACTURACONTADO IN NUMBER
+)
+    
+AS
+BEGIN
+    IF(V_FACTURACONTADO = 1) THEN
+
+        BEGIN
+            INSERT INTO HL7_CONTROL(
+                ENTREGADO, MENSAJE, 
+                FECHA, IDENTITY_MESSAGE, 
+                RETORNA_RESPUESTA, NU_NUME_FACO)
+            VALUES (
+                1, V_MENSAJE,
+                SYSDATE, V_IDENTITY_MESSAGE, 
+                V_RETORNA_RESPUESTA, V_NU_NUME_FACO);
+            END;
+
+    ELSE
+
+        BEGIN
+            INSERT INTO HL7_CONTROL (
+                ENTREGADO, MENSAJE, 
+                FECHA, IDENTITY_MESSAGE, 
+                RETORNA_RESPUESTA, NU_NUME_MOVI)
+            VALUES ( 1, V_MENSAJE,
+                SYSDATE, V_IDENTITY_MESSAGE, 
+                V_RETORNA_RESPUESTA, V_NU_NUME_MOVI);
+        END;
+
+    END IF;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

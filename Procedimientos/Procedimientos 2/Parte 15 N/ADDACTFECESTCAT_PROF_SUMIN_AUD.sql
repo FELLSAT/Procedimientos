@@ -1,0 +1,44 @@
+CREATE OR REPLACE PROCEDURE ADDACTFECESTCAT_PROF_SUMIN_AUD
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+    v_NUEVO IN NUMBER,
+    v_COD_NUM_ESTA_AEFCPS IN NUMBER,
+    v_COD_CATAL_PS_AEFCPS IN NUMBER,
+    v_NU_ESTA_AEFCOS IN NUMBER,
+    v_FE_FECHA_INI_AEFCOS IN DATE,
+    v_FE_FECHA_FIN_AEFCOS IN DATE
+)
+AS
+
+BEGIN
+
+    IF v_NUEVO = 1 THEN
+
+        BEGIN
+            INSERT INTO AUDITAR_ESTA_FECHA_CAT_PROFE_S( 
+                COD_CATAL_PS_AEFCPS, NU_ESTA_AEFCOS, 
+                FE_FECHA_INI_AEFCOS, FE_FECHA_FIN_AEFCOS )
+            VALUES ( 
+                v_COD_CATAL_PS_AEFCPS, v_NU_ESTA_AEFCOS, 
+                v_FE_FECHA_INI_AEFCOS, v_FE_FECHA_FIN_AEFCOS );
+        END;
+
+    ELSE
+
+        BEGIN
+            UPDATE AUDITAR_ESTA_FECHA_CAT_PROFE_S
+            SET COD_CATAL_PS_AEFCPS = v_COD_CATAL_PS_AEFCPS,
+                NU_ESTA_AEFCOS = v_NU_ESTA_AEFCOS,
+                FE_FECHA_INI_AEFCOS = v_FE_FECHA_INI_AEFCOS,
+                FE_FECHA_FIN_AEFCOS = v_FE_FECHA_FIN_AEFCOS
+            WHERE  COD_NUM_ESTA_AEFCPS = v_COD_NUM_ESTA_AEFCPS;
+        END;
+        
+    END IF;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

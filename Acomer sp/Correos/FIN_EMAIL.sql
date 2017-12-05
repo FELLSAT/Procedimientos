@@ -1,0 +1,9 @@
+CREATE OR REPLACE PROCEDURE FIN_EMAIL
+(
+	conn IN OUT NOCOPY utl_smtp.connection
+)
+IS
+BEGIN
+    FIN_EMAIL_EN_SESION(conn);
+    FIN_SESION(conn);
+END;

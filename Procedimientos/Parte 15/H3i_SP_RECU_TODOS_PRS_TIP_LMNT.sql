@@ -1,0 +1,19 @@
+CREATE PROCEDURE H3i_SP_RECU_TODOS_PRS_TIP_LMNT
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+	CV_1 OUT SYS_REFCURSOR
+)				 
+AS 
+BEGIN
+	OPEN CV_1 FOR
+		SELECT ID_TIP_ELEMENTO,
+			DESCRIPCION,
+			NU_SE_DEVUELVE
+		FROM PRES_TIP_ELEMENTO;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

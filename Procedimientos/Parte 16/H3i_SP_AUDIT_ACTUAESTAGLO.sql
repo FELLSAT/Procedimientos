@@ -1,0 +1,20 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_AUDIT_ACTUAESTAGLO
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_COD_DOC_OBJ IN NUMBER,
+  v_ESTADO IN NUMBER
+)
+AS
+
+BEGIN
+
+	UPDATE AUDITAR_REGISTRO_GLOSADO
+	SET ESTADO_ARG = v_ESTADO
+	WHERE  COD_AUDI_DOCUM_ARG = v_COD_DOC_OBJ;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

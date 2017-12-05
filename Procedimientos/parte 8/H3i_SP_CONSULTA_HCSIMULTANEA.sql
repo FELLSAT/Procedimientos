@@ -1,0 +1,26 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_CONSULTA_HCSIMULTANEA
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_NUMELABO IN NUMBER,
+  v_NUMEMOVI IN NUMBER,
+  cv_1 OUT SYS_REFCURSOR
+)
+AS
+
+BEGIN
+
+   OPEN  cv_1 FOR
+      SELECT U.NO_NOMB_USUA ,
+             HS.FE_FECH_HIST ,
+             HS.ID_IDEN_USUA 
+        FROM HISTORIAS_SIMULTANEAS HS
+               JOIN USUARIOS U   ON HS.ID_IDEN_USUA = U.ID_IDEN_USUA
+       WHERE  HS.NU_NUME_MOVI = v_NUMEMOVI
+                AND HS.NU_NUME_LABO = v_NUMELABO ;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

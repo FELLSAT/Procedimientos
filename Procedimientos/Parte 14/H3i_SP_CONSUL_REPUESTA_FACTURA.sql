@@ -1,0 +1,26 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_CONSUL_REPUESTA_FACTURA
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+    V_ID IN NUMBER,
+    CV_1 OUT SYS_REFCURSOR
+)
+
+AS
+BEGIN
+    OPEN CV_1 FOR
+        SELECT MENSAJE_RESPUESTA
+        FROM HL7_CONTROL HCO
+        WHERE HCO.ID = V_ID
+            AND HCO.RETORNA_RESPUESTA = 1
+            AND HCO.FECHA_RESPUESTA IS NOT NULL
+            AND HCO.MENSAJE_RESPUESTA IS NOT NULL
+            AND HCO.IDENTITY_MESSAGE = 'DFT-P03'
+            AND HCO.RESPUESTA_PROCESADA = 0;
+
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

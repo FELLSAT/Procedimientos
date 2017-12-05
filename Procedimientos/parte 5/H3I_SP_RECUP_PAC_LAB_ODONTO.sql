@@ -1,0 +1,35 @@
+CREATE OR REPLACE PROCEDURE H3I_SP_RECUP_PAC_LAB_ODONTO -- PROCEDIMIENTO ALMACENADO PARA RECUPERACION DE CONSULTA PACIENTE-LABORATORIO ODONTOGRAMA
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_CD_PACIENTE IN NUMBER,
+  v_CD_LABO IN NUMBER,
+  cv_1 OUT SYS_REFCURSOR
+)
+AS
+
+BEGIN
+
+   OPEN  cv_1 FOR
+      SELECT CD_CONSULTA ,
+             CD_PAC_HCLI ,
+             FE_CONSULTA ,
+             CD_SESION ,
+             CD_LABORATORIO ,
+             NU_DIENTES_TEMP ,
+             NU_DIENTES_PERM ,
+             NU_LES_NOCAVIT ,
+             NU_LES_CAVIT ,
+             NU_DI_OBTURADOS ,
+             NU_DI_PERDIDOS ,
+             NU_DIENTES_PRES 
+        FROM HIST_ODONTO_LOG_CONS 
+       WHERE  CD_PAC_HCLI = v_CD_PACIENTE
+                AND CD_LABORATORIO = v_CD_LABO
+        ORDER BY FE_CONSULTA DESC ;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

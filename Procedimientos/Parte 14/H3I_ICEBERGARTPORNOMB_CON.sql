@@ -1,0 +1,22 @@
+CREATE OR REPLACE PROCEDURE H3I_ICEBERGARTPORNOMB_CON
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+	V_NO_NOMB_ARTI IN VARCHAR2,
+	CV_1 OUT SYS_REFCURSOR
+)
+ 
+AS
+BEGIN
+
+	OPEN CV_1 FOR
+		SELECT CD_CODI_ARTI,NO_NOMB_ARTI 
+		FROM ARTICULO
+		WHERE NO_NOMB_ARTI LIKE '%' + V_NO_NOMB_ARTI + '%';
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+	
+END;

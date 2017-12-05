@@ -1,0 +1,19 @@
+CREATE PROCEDURE H3i_SP_AUDI_LISTR_PRESNTACIONS
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+	CV_1 OUT SYS_REFCURSOR
+)
+AS
+BEGIN
+	
+	OPEN CV_1 FOR
+		SELECT CD_COD_PRE,DESCRIPCION_PRE,ESTADO_PRE
+		FROM AUDI_PRESENTACION;
+
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

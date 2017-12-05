@@ -1,0 +1,21 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_CONSULTA_NUMEREPO
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_FECHA IN DATE,
+  cv_1 OUT SYS_REFCURSOR
+)
+AS
+
+BEGIN
+
+	OPEN  cv_1 FOR
+		SELECT CD_CODI_REPO NUMHISTORICO  
+		FROM REPORTESAMA_HIST 
+		WHERE  FE_FECH_REPO = v_FECHA ;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

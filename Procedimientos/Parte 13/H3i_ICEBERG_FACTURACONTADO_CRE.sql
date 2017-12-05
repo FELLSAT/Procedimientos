@@ -1,0 +1,27 @@
+CREATE OR REPLACE PROCEDURE H3i_ICEBERG_FACTURACONTADO_CRE
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_NU_NUME_FACO IN NUMBER,
+  v_TX_PREFIJO_ICEBERG IN VARCHAR2,
+  v_NU_NUME_ICEBERG IN NUMBER,
+  v_IS_MANUAL IN VARCHAR2
+)
+AS
+
+BEGIN
+
+   	INSERT INTO iceberg_facturas_contado( 
+   		NU_NUME_FACO, TX_PREFIJO_ICEBERG, 
+   		NU_NUME_ICEBERG, IS_MANUAL, 
+   		IS_IMPRESA )
+    VALUES( 
+    	v_NU_NUME_FACO, v_TX_PREFIJO_ICEBERG, 
+    	v_NU_NUME_ICEBERG, v_IS_MANUAL, 
+    	'0' );
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

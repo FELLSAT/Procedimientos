@@ -1,0 +1,27 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_PUEDE_CARGAR_FIRMA
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_NUM_DOCUMENTO IN VARCHAR2,
+  v_NU_TIPD_MED IN NUMBER,
+  cv_1 OUT SYS_REFCURSOR
+)
+AS
+
+BEGIN
+
+   OPEN  cv_1 FOR
+      SELECT CD_CODI_MED 
+        FROM MEDICOS ,
+             USUARIOS 
+       WHERE  MEDICOS.NU_DOCU_MED = v_NUM_DOCUMENTO
+                AND USUARIOS.NU_DOCU_USUA = v_NUM_DOCUMENTO
+                AND MEDICOS.NU_TIPD_MED = v_NU_TIPD_MED
+                AND USUARIOS.NU_TIPD_USUA = v_NU_TIPD_MED
+                AND MEDICOS.NU_DOCU_MED = USUARIOS.NU_DOCU_USUA ;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END H3i_SP_PUEDE_CARGAR_FIRMA;

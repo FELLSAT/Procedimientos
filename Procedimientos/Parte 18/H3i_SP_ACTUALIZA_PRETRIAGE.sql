@@ -1,0 +1,21 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_ACTUALIZA_PRETRIAGE
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_NU_AUTO_PTRI IN NUMBER,
+  v_IDTRIAGE IN NUMBER
+)
+AS
+
+BEGIN
+
+	UPDATE PRETRIAGE
+	SET FE_INIAT_PTRI = SYSDATE,
+		NU_NUME_TRIA_PTRI = v_IDTRIAGE
+	WHERE  NU_AUTO_PTRI = v_NU_AUTO_PTRI;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

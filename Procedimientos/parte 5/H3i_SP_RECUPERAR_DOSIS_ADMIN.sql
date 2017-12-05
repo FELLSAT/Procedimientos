@@ -1,0 +1,48 @@
+
+CREATE OR REPLACE PROCEDURE H3i_SP_RECUPERAR_DOSIS_ADMIN
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_NU_NUME_REG IN NUMBER,
+  v_NU_NUME_HMED IN NUMBER DEFAULT NULL ,
+  v_MED_CERRADO IN NUMBER DEFAULT NULL ,
+  v_FECHA_INI IN DATE DEFAULT NULL ,
+  v_FECHA_FIN IN DATE DEFAULT NULL ,
+  cv_1 OUT SYS_REFCURSOR
+)
+AS
+
+BEGIN
+
+    OPEN  cv_1 FOR
+        SELECT NU_NUME_DADMI ,
+              FE_FECHA_DADMI ,
+              NU_CANTIDAD_DADMI ,
+              DA.NU_NUME_HMED ,
+              NU_NUME_REG ,
+              DA.NU_NUME_CONE ,
+              NU_NUME_UNIDAD ,
+              NU_CONCEN_MED ,
+              DA.NU_CANTIDAD_DADMI_REAL ,
+              MED_CERRADO ,
+              USUARIO ,
+              NUM_MED_ADMIN_ACT ,
+              HM.CD_CODI_ARTI_HMED ,
+              HM.NO_NOMB_ARTI_HMED 
+        FROM DOSIS_ADMINISTRADAS DA
+        JOIN CONEXIONES C   
+          ON DA.NU_NUME_CONE = C.NU_NUME_CONE
+        JOIN HIST_MEDI HM   
+          ON DA.NU_NUME_HMED = HM.NU_NUME_HMED
+        WHERE  NU_NUME_REG = v_NU_NUME_REG
+                AND MED_CERRADO = NVL(v_MED_CERRADO, MED_CERRADO)
+                AND DA.NU_NUME_HMED = NVL(v_NU_NUME_HMED, DA.NU_NUME_HMED)
+                AND FE_FECHA_DADMI >= NVL(v_FECHA_INI, FE_FECHA_DADMI)
+                AND FE_FECHA_DADMI <= NVL(v_FECHA_FIN, FE_FECHA_DADMI)
+        ORDER BY NU_NUME_DADMI DESC ;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

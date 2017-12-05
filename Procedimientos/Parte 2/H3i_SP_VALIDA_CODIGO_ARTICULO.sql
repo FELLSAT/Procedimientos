@@ -1,0 +1,21 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_VALIDA_CODIGO_ARTICULO
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_CODIGO IN VARCHAR2,
+  cv_1 OUT SYS_REFCURSOR
+)
+AS
+
+BEGIN
+
+   OPEN  cv_1 FOR
+      SELECT CD_CODI_ARTI 
+        FROM ARTICULO 
+       WHERE  RTRIM(LTRIM(CD_CODI_ARTI)) = v_CODIGO ;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END H3i_SP_VALIDA_CODIGO_ARTICULO;

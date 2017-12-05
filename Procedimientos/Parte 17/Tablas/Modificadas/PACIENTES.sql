@@ -1,0 +1,93 @@
+CREATE TABLE SPTYT.PACIENTES
+(
+  NU_DOCU_PAC                VARCHAR2(20 CHAR)  NOT NULL,
+  NU_HIST_PAC                VARCHAR2(20 CHAR)  NOT NULL,
+  NU_TIPD_PAC                NUMBER(3)          DEFAULT (0)                   NOT NULL,
+  DE_PRAP_PAC                VARCHAR2(100 CHAR) NOT NULL,
+  DE_SGAP_PAC                VARCHAR2(100 CHAR),
+  NO_NOMB_PAC                VARCHAR2(100 CHAR) NOT NULL,
+  NO_SGNO_PAC                VARCHAR2(100 CHAR),
+  FE_NACI_PAC                DATE               NOT NULL,
+  CD_CODI_DPTO_PAC           VARCHAR2(3 CHAR),
+  CD_CODI_MUNI_PAC           VARCHAR2(10 CHAR),
+  DE_DIRE_PAC                VARCHAR2(4000),
+  DE_TELE_PAC                VARCHAR2(30 CHAR),
+  NU_SEXO_PAC                NUMBER(3)          DEFAULT (0)                   NOT NULL,
+  NU_ESCI_PAC                NUMBER(3)          DEFAULT (0),
+  FE_HIST_PAC                DATE               NOT NULL,
+  NU_SITU_PAC                VARCHAR2(20 CHAR),
+  CD_CODI_CAM_PAC            VARCHAR2(20 CHAR),
+  NU_NUME_REG_PAC            NUMBER(10),
+  NU_NIVE_PAC                NUMBER(3)          DEFAULT (0),
+  NU_ESTA_PAC                NUMBER(3)          DEFAULT (1),
+  CD_CODI_ZORE_PAC           VARCHAR2(1 CHAR),
+  CD_CODI_LUAT_PAC           VARCHAR2(2 CHAR),
+  DE_EMAIL_PAC               VARCHAR2(100 CHAR),
+  CD_CODI_OCUP_PAC           VARCHAR2(4 CHAR),
+  NU_CONS_HIST_PAC           NUMBER(10),
+  NU_TIPO_PAC                NUMBER(3),
+  CD_CODI_RELI_PAC           VARCHAR2(2 CHAR),
+  CD_CODI_BAR_PAC            VARCHAR2(4 CHAR),
+  NU_GEST_PAC                NUMBER(10),
+  FE_FECHMOD_AUDIT           DATE,
+  TX_USUA_PAC                VARCHAR2(50 CHAR),
+  CD_CODI_DPTO_TRAB_PAC      VARCHAR2(3 CHAR),
+  CD_CODI_MUNI_TRAB_PAC      VARCHAR2(3 CHAR),
+  CD_CODI_DPTO_NACI_PAC      VARCHAR2(3 CHAR),
+  CD_CODI_MUNI_NACI_PAC      VARCHAR2(3 CHAR),
+  TX_TELTRAB_PAC             VARCHAR2(30 CHAR),
+  TX_DIRTRAB_PAC             VARCHAR2(4000),
+  TX_NOMBRESP_PAC            VARCHAR2(80 CHAR),
+  CD_CODI_PARE_PAC           VARCHAR2(2 CHAR),
+  TX_DIRRESP_PAC             VARCHAR2(4000),
+  TX_TELRESP_PAC             VARCHAR2(30 CHAR),
+  ME_INFOAD_PAC              VARCHAR2(4000 CHAR),
+  NU_FALLE_PAC               NUMBER(3)          DEFAULT (0),
+  CD_CODI_ESCO_PAC           VARCHAR2(2 CHAR),
+  CD_CODI_PAIS_PAC           VARCHAR2(3 CHAR)   NOT NULL,
+  CD_CODI_PAIS_NACI_PAC      VARCHAR2(3 CHAR),
+  CD_CODI_PAIS_TRAB_PAC      VARCHAR2(3 CHAR),
+  NU_ACTI_EPS_PAC            NUMBER(3)          DEFAULT (0),
+  NU_TERC_PAC                NUMBER(3)          DEFAULT (0),
+  NU_DATOS_EXT_PAC           NUMBER(3)          DEFAULT (0),
+  DE_CELU_PAC                VARCHAR2(30),
+  TX_CODIGO_ETNI_PACI        VARCHAR2(10),
+  TX_DISCAPACIDAD_PACI       VARCHAR2(400),
+  NU_AUTO_TIRH               NUMBER(10),
+  CD_CODI_DATO_PAC           VARCHAR2(2 CHAR),
+  CD_CODI_LOC_PAC            VARCHAR2(5 CHAR),
+  INFO_PAC_COMPLETA          NUMBER(1)          DEFAULT (1)                   NOT NULL,
+  DE_OTRO_TELE_PAC           VARCHAR2(30 CHAR),
+  PS_PASS_PAC                VARCHAR2(15 CHAR),
+  NU_ISDESPLAZADO_PAC        NUMBER(3),
+  ES_MIHIMS                  NUMBER(1)          DEFAULT (0),
+  TX_JORNADA_PAC             VARCHAR2(50 CHAR),
+  ACEPT_COND_PAC             NUMBER(1)          DEFAULT (0)                   NOT NULL,
+  NU_ESTRATO_PAC             VARCHAR2(10 CHAR),
+  CD_CODI_CARGO_PAC          VARCHAR2(50),
+  NU_DEPENDENCIA_PAC         VARCHAR2(4 CHAR),
+  TX_TIPOCONTRATO_PAC        VARCHAR2(50),
+  CONF_CORR_PREP_COLDP       NUMBER(1)          DEFAULT (0)                   NOT NULL,
+  FECH_CONF_CORR_PREP_COLDP  DATE,
+  CD_CODI_GENE_PAC           CHAR(2 CHAR),
+  CD_CODI_RAZA_PAC           CHAR(2 CHAR),
+  TX_NOMBRECOMPLETO_PAC      VARCHAR2(403 CHAR),
+  TX_CODIGO_TICO_PAC         VARCHAR2(30)
+)
+TABLESPACE USERS
+PCTUSED    0
+PCTFREE    10
+INITRANS   1
+MAXTRANS   255
+STORAGE    (
+            INITIAL          64K
+            NEXT             1M
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+           )
+LOGGING 
+NOCOMPRESS 
+NOCACHE
+MONITORING;

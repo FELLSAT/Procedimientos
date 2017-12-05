@@ -1,0 +1,53 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_EVENTPROCESP_PAC_ACT
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_NoHICL IN NUMBER,
+  v_IDEVENTO IN NUMBER,
+  v_CERRAR IN NUMBER,
+  v_TipoPROCESP IN NUMBER
+)
+AS
+
+BEGIN
+
+   IF ( v_CERRAR = 0 ) THEN
+    DECLARE
+      v_NUM_LABO NUMBER(10,0);
+   
+   BEGIN
+      -- SELECCIONANDO LABORATORIO PARA SETEAR A LABO = 0
+      SELECT NU_NUME_LABO_HICL 
+
+        INTO v_NUM_LABO
+        FROM HISTORIACLINICA 
+       WHERE  NU_NUME_HICL = v_NoHICL;
+      -- ACTUALIZANDO NUM LABO A 0, SI NO SE ESTA CERRANDO
+      UPDATE HISTORIACLINICA
+         SET NU_NUME_LABO_HICL = 0
+       WHERE  NU_NUME_HICL = v_NoHICL;
+      -- GUARDANDO BACKUP DE LABO BORRADO
+      INSERT INTO EVENTO_PROCESPECIAL_LOGHC
+        ( NU_NUME_HICL_EPEL, NU_NUME_LABO_EPEL )
+        VALUES ( v_NoHICL, v_NUM_LABO );
+   
+   END;
+   END IF;
+   UPDATE EVENTO_PROCESPECIAL
+      SET NU_NUME_HICL_EVENPE = v_NoHICL,
+          NU_ESTADO_EVENPE = (CASE v_CERRAR
+                                           WHEN 0 THEN 1
+          ELSE 0
+             END),
+          FE_CIERRE_EVENPE = (CASE v_CERRAR
+                                           WHEN 0 THEN FE_CIERRE_EVENPE
+          ELSE SYSDATE
+             END)
+    WHERE  NU_AUTO_EVENPE = v_IDEVENTO
+     AND NU_TIPO_EVENPE = v_TipoPROCESP;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

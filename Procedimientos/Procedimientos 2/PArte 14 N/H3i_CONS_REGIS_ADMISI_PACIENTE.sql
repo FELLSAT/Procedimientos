@@ -1,0 +1,21 @@
+CREATE OR REPLACE PROCEDURE H3i_CONS_REGIS_ADMISI_PACIENTE
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+	V_NU_HIST_PAC_REG IN VARCHAR2,
+	CV_1 OUT SYS_REFCURSOR
+)
+
+AS
+BEGIN
+	OPEN CV_1 FOR
+		SELECT *
+		FROM REGISTRO
+		WHERE NU_HIST_PAC_REG = V_NU_HIST_PAC_REG ;
+
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

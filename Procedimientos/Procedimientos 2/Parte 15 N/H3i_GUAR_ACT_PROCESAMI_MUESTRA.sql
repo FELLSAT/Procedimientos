@@ -1,0 +1,117 @@
+CREATE OR REPLACE PROCEDURE H3i_GUAR_ACT_PROCESAMI_MUESTRA
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+    v_CD_CODI_PRM IN NUMBER,
+    v_NU_NUME_MOVI_PRM IN NUMBER,
+    v_CD_CODI_SER_PRM IN VARCHAR2,
+    v_CD_CODI_SEC_PRM IN VARCHAR2,
+    v_NU_DOCU_PAC_PRM IN VARCHAR2,
+    v_CD_CODI_ESM_PRM IN VARCHAR2,
+    v_NU_CONS_PRM IN NUMBER,
+    v_NU_CTRL_PRM IN NUMBER,
+    v_FE_FECH_RECE_MUES_PRM IN DATE,
+    v_FE_FECH_RESU_MUES_PRM IN DATE,
+    v_FE_FECH_IMPR_MUES_PRM IN DATE,
+    v_FE_FECH_ENTR_MUES_PRM IN DATE,
+    v_CD_MEDI_RECI_PRM IN VARCHAR2,
+    v_HO_HORA_RECE_MUES_PRM IN VARCHAR2,
+    v_HO_HORA_RESU_MUES_PRM IN VARCHAR2,
+    v_HO_HORA_IMPR_MUES_PRM IN VARCHAR2,
+    v_HO_HORA_ENTR_MUES_PRM IN VARCHAR2,
+    v_BIT_EN_PROCESO_RESUL IN NUMBER,
+    v_NO_NOMB_USU_EN_PRO_RESUL IN VARCHAR2,
+    v_CD_MEDI_RESU_PRM IN VARCHAR2,
+    v_CD_MEDI_IMPR_PRM IN VARCHAR2,
+    v_CD_MEDI_ENTR_PRM IN VARCHAR2,
+    v_NU_CANT_RECI_PRM IN NUMBER,
+    v_NU_NUME_LABO_PRM IN NUMBER,
+    v_NU_HIST_PAC_PRM IN VARCHAR2
+)
+AS
+    v_temp NUMBER(1, 0) := 0;
+
+BEGIN
+
+    BEGIN
+        SELECT 1 INTO v_temp
+        FROM DUAL
+        WHERE ( SELECT COUNT(CD_CODI_PRM)  
+                FROM PROCESAMIENTO_MUESTRA 
+                WHERE  CD_CODI_PRM = v_CD_CODI_PRM ) > 0;
+    EXCEPTION
+        WHEN OTHERS THEN
+            NULL;
+    END;
+      
+    IF v_temp = 1 THEN
+    
+        BEGIN
+            UPDATE PROCESAMIENTO_MUESTRA
+            SET NU_NUME_MOVI_PRM = v_NU_NUME_MOVI_PRM,
+                CD_CODI_SER_PRM = v_CD_CODI_SER_PRM,
+                CD_CODI_SEC_PRM = v_CD_CODI_SEC_PRM,
+                NU_DOCU_PAC_PRM = v_NU_DOCU_PAC_PRM,
+                CD_CODI_ESM_PRM = v_CD_CODI_ESM_PRM,
+                NU_CONS_PRM = v_NU_CONS_PRM,
+                NU_CTRL_PRM = v_NU_CTRL_PRM,
+                FE_FECH_RECE_MUES_PRM = v_FE_FECH_RECE_MUES_PRM,
+                FE_FECH_RESU_MUES_PRM = v_FE_FECH_RESU_MUES_PRM,
+                FE_FECH_IMPR_MUES_PRM = v_FE_FECH_IMPR_MUES_PRM,
+                FE_FECH_ENTR_MUES_PRM = v_FE_FECH_ENTR_MUES_PRM,
+                CD_MEDI_RECI_PRM = v_CD_MEDI_RECI_PRM,
+                HO_HORA_RECE_MUES_PRM = v_HO_HORA_RECE_MUES_PRM,
+                HO_HORA_RESU_MUES_PRM = v_HO_HORA_RESU_MUES_PRM,
+                HO_HORA_IMPR_MUES_PRM = v_HO_HORA_IMPR_MUES_PRM,
+                HO_HORA_ENTR_MUES_PRM = v_HO_HORA_ENTR_MUES_PRM,
+                BIT_EN_PROCESO_RESUL = v_BIT_EN_PROCESO_RESUL,
+                NO_NOMB_USU_EN_PRO_RESUL = v_NO_NOMB_USU_EN_PRO_RESUL,
+                CD_MEDI_RESU_PRM = v_CD_MEDI_RESU_PRM,
+                CD_MEDI_IMPR_PRM = v_CD_MEDI_IMPR_PRM,
+                CD_MEDI_ENTR_PRM = v_CD_MEDI_ENTR_PRM,
+                NU_CANT_RECI_PRM = v_NU_CANT_RECI_PRM,
+                NU_NUME_LABO_PRM = v_NU_NUME_LABO_PRM,
+                NU_HIST_PAC_PRM = v_NU_HIST_PAC_PRM
+            WHERE  CD_CODI_PRM = v_CD_CODI_PRM;   
+        END;
+
+    ELSE
+   
+        BEGIN
+            INSERT INTO PROCESAMIENTO_MUESTRA( 
+                NU_NUME_MOVI_PRM, CD_CODI_SER_PRM, 
+                CD_CODI_SEC_PRM, NU_DOCU_PAC_PRM, 
+                CD_CODI_ESM_PRM, NU_CONS_PRM, 
+                NU_CTRL_PRM, FE_FECH_RECE_MUES_PRM, 
+                FE_FECH_RESU_MUES_PRM, FE_FECH_IMPR_MUES_PRM, 
+                FE_FECH_ENTR_MUES_PRM, CD_MEDI_RECI_PRM, 
+                HO_HORA_RECE_MUES_PRM, HO_HORA_RESU_MUES_PRM, 
+                HO_HORA_IMPR_MUES_PRM, HO_HORA_ENTR_MUES_PRM, 
+                BIT_EN_PROCESO_RESUL, NO_NOMB_USU_EN_PRO_RESUL, 
+                CD_MEDI_RESU_PRM, CD_MEDI_IMPR_PRM, 
+                CD_MEDI_ENTR_PRM, NU_CANT_RECI_PRM, 
+                NU_NUME_LABO_PRM, NU_HIST_PAC_PRM )
+            VALUES ( 
+              v_NU_NUME_MOVI_PRM, v_CD_CODI_SER_PRM, 
+              v_CD_CODI_SEC_PRM, v_NU_DOCU_PAC_PRM, 
+              v_CD_CODI_ESM_PRM, v_NU_CONS_PRM,
+              v_NU_CTRL_PRM, v_FE_FECH_RECE_MUES_PRM, 
+              v_FE_FECH_RESU_MUES_PRM, v_FE_FECH_IMPR_MUES_PRM, 
+              v_FE_FECH_ENTR_MUES_PRM, v_CD_MEDI_RECI_PRM, 
+              v_HO_HORA_RECE_MUES_PRM, v_HO_HORA_RESU_MUES_PRM, 
+              v_HO_HORA_IMPR_MUES_PRM, v_HO_HORA_ENTR_MUES_PRM, 
+              v_BIT_EN_PROCESO_RESUL, v_NO_NOMB_USU_EN_PRO_RESUL, 
+              v_CD_MEDI_RESU_PRM, v_CD_MEDI_IMPR_PRM, 
+              v_CD_MEDI_ENTR_PRM, v_NU_CANT_RECI_PRM, 
+              v_NU_NUME_LABO_PRM, v_NU_HIST_PAC_PRM );  
+        END;
+
+    END IF;
+
+   
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

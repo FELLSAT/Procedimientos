@@ -1,0 +1,36 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_CONSULTA_PERMISOS
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_CODIGOPERFIL IN VARCHAR2,
+  v_CODIGOOPCION IN VARCHAR2 DEFAULT NULL ,
+  cv_1 OUT SYS_REFCURSOR
+)
+AS
+
+BEGIN
+
+   OPEN  cv_1 FOR
+      SELECT DISTINCT CD_CODI_OPCI ,
+          DE_DESC_OPCI ,
+          CASE CD_CODI_PADR_OPCI
+              WHEN 'CNT' THEN '0'
+              ELSE CD_CODI_PADR_OPCI
+          END CD_CODI_PADR_OPCI  ,
+          P.ID_CONS_PERM ,
+          P.ID_ANUL_PERM ,
+          P.ID_IMPR_PERM ,
+          P.ID_CREA_PERM ,
+          P.ID_OTRO_PERM ,
+          P.ID_OTR1_PERM 
+      FROM PERMISOS P
+      INNER JOIN OPCIONES O   
+          ON P.CD_CODI_OPCI_PERM = O.CD_CODI_OPCI
+      WHERE  CD_CODI_PERF_PERM = v_CODIGOPERFIL
+          AND CD_CODI_OPCI = NVL(v_CODIGOOPCION, CD_CODI_OPCI) ;
+
+EXCEPTION
+  WHEN OTHERS 
+      THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END H3i_SP_CONSULTA_PERMISOS;

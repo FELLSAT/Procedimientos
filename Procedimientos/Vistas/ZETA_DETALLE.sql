@@ -1,0 +1,65 @@
+CREATE OR REPLACE VIEW ZETA_DETALLE
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+AS 
+      SELECT 
+          CASE NU_TIPO_MOVI
+              WHEN 0 THEN 'Procedimientos'
+              WHEN 1 THEN 'Elementos -Medicamentos'
+              WHEN 2 THEN 'Apoyo Dx'
+              WHEN 3 THEN 'Quirurgicos'
+              WHEN 4 THEN 'Consultas'   
+          END TIPO  ,
+          SUM(MOVI_CARGOS.VL_UNID_MOVI - MOVI_CARGOS.VL_COPA_MOVI)  VALOR,
+          FACTURAS_CONTADO.NU_NUME_ZETA_FACO,
+          FACTURAS_CONTADO.NU_NUME_CAJA_FACO 
+      FROM FACTURAS_CONTADO 
+      INNER JOIN MOVI_CARGOS    
+          ON FACTURAS_CONTADO.NU_NUME_FACO = MOVI_CARGOS.NU_NUME_FACO_MOVI
+      WHERE (FACTURAS_CONTADO.NU_NUME_FACO <> 0)
+          AND (MOVI_CARGOS.NU_ESTA_MOVI <> 2)
+          AND (FACTURAS_CONTADO.NU_CONSE_FACCAJA_FACO <> 0 )
+      GROUP BY MOVI_CARGOS.NU_TIPO_MOVI, FACTURAS_CONTADO.NU_NUME_ZETA_FACO, 
+          FACTURAS_CONTADO.NU_NUME_CAJA_FACO
+
+  UNION ALL 
+
+      SELECT 
+          CASE NU_TIPO_MOVI
+              WHEN 0 THEN 'Copagos Procedimientos'
+              WHEN 1 THEN 'Copagos Elementos -Medicamentos'
+              WHEN 2 THEN 'Copagos Apoyo Dx'
+              WHEN 3 THEN 'Copagos Quirurgicos'
+              WHEN 4 THEN 'Copagos Consultas'   
+          END Expr1  ,
+          SUM(MOVI_CARGOS.VL_COPA_MOVI)  VALOR  ,
+          FACTURAS_CONTADO.NU_NUME_ZETA_FACO ,
+          FACTURAS_CONTADO.NU_NUME_CAJA_FACO 
+      FROM FACTURAS_CONTADO 
+      INNER JOIN MOVI_CARGOS    
+          ON FACTURAS_CONTADO.NU_NUME_FACO = MOVI_CARGOS.NU_NUME_FACO_MOVI
+      WHERE (FACTURAS_CONTADO.NU_NUME_FACO <> 0)
+          AND (MOVI_CARGOS.NU_ESTA_MOVI <> 2)
+          AND (FACTURAS_CONTADO.NU_CONSE_FACCAJA_FACO <> 0)
+      GROUP BY MOVI_CARGOS.NU_TIPO_MOVI, FACTURAS_CONTADO.NU_NUME_ZETA_FACO,
+          FACTURAS_CONTADO.NU_NUME_CAJA_FACO
+
+  UNION ALL 
+
+      SELECT 
+          CASE 
+              WHEN NU_TIPO_MOVI IN ( 0,1,2,3,4 )
+                  THEN 'IVA '   
+              END Expr1  ,
+          SUM(0)  VALOR  ,
+          FACTURAS_CONTADO.NU_NUME_ZETA_FACO ,
+          FACTURAS_CONTADO.NU_NUME_CAJA_FACO 
+      FROM FACTURAS_CONTADO 
+      INNER JOIN MOVI_CARGOS    
+          ON FACTURAS_CONTADO.NU_NUME_FACO = MOVI_CARGOS.NU_NUME_FACO_MOVI
+      WHERE (FACTURAS_CONTADO.NU_NUME_FACO <> 0)
+          AND (MOVI_CARGOS.NU_ESTA_MOVI <> 2)
+          AND (FACTURAS_CONTADO.NU_CONSE_FACCAJA_FACO <> 0)
+      GROUP BY MOVI_CARGOS.NU_TIPO_MOVI, FACTURAS_CONTADO.NU_NUME_ZETA_FACO,
+          FACTURAS_CONTADO.NU_NUME_CAJA_FACO;

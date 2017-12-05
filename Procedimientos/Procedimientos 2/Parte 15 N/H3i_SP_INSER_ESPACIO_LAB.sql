@@ -1,0 +1,21 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_INSER_ESPACIO_LAB
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_CD_AUTO_LAB_ESP IN NUMBER,
+  v_IDENTIFICADOR IN VARCHAR2
+)
+AS
+
+BEGIN
+
+	INSERT INTO ESPACIO_LAB( 
+		CD_AUTO_LAB_ESP, IDENTIFICADOR )
+	VALUES ( 
+		v_CD_AUTO_LAB_ESP, v_IDENTIFICADOR );
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

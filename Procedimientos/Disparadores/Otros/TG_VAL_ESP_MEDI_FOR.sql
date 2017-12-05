@@ -1,0 +1,38 @@
+CREATE OR REPLACE TRIGGER TG_VAL_ESP_MEDI_FOR  
+AFTER INSERT OR UPDATE
+ON FORMULAS
+FOR EACH ROW
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- ============================================= 
+DECLARE
+	V_CODI_ESPE VARCHAR2(3); 
+	V_CODI_MEDI VARCHAR2(4);
+	V_EXISTE NUMBER;
+BEGIN
+	SELECT COUNT(:NEW.CD_CODI_MED_FORM) + COUNT(:NEW.CD_CODI_ESP_FORM )
+	INTO V_EXISTE
+	FROM DUAL;
+
+	IF (V_EXISTE >= 1) THEN
+		BEGIN
+			SELECT :NEW.CD_CODI_MED_FORM, :NEW.CD_CODI_ESP_FORM
+			INTO V_CODI_MEDI, V_CODI_ESPE
+			FROM DUAL;
+			--SI DA 0 LA ESPECIALIDAD PARA ESE MEDICO NO EXISTE, ENTONCES SE LEVANTA EL ERROR
+
+			SELECT COUNT(*) 
+			INTO V_EXISTE
+			FROM R_MEDI_ESPE 
+			WHERE CD_CODI_MED_RMP = V_CODI_MEDI 
+				AND CD_CODI_ESP_RMP = V_CODI_ESPE;
+			
+			IF (V_EXISTE <= 0) THEN
+				BEGIN
+					RAISE_APPLICATION_ERROR(16,'El doctor de código %s no tiene la especialidad %s. No se puede completar la operación en la tabla fórmulas '||V_CODI_MEDI||' '||V_CODI_ESPE);
+					ROLLBACK;
+				END;
+			END IF;
+		END;
+	END IF;
+END;

@@ -1,0 +1,24 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_OBTENER_SER_ACTI
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_COD_ACTIVIDAD IN VARCHAR2,
+  cv_1 OUT SYS_REFCURSOR
+)
+AS
+
+BEGIN
+
+   OPEN  cv_1 FOR
+      SELECT SER.CD_CODI_SER CODIGO  ,
+             SER.NO_NOMB_SER NOMBRE  ,
+             RSA.NU_CONS_RSA CODIGO_REL  
+        FROM SERVICIOS SER
+               JOIN R_SER_ACTI RSA   ON SER.CD_CODI_SER = RSA.CD_CODI_SER_RSA
+       WHERE  CD_CODI_ACTI_RSA = v_COD_ACTIVIDAD ;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

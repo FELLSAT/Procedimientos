@@ -1,0 +1,18 @@
+CREATE OR REPLACE FUNCTION FN_ENCRIPTAR_DATOS
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+	V_IN_DATOS VARCHAR2 -- DATOS QUE SE VAN A ENCRIPTAR
+)
+RETURN RAW
+IS
+	V_OUT_DATOS RAW(48);
+BEGIN
+	V_OUT_DATOS := DBMS_CRYPTO.ENCRYPT(
+						src => UTL_I18N.STRING_TO_RAW (TRIM(V_IN_DATOS), 'AL32UTF8'),
+						typ => 4353,
+						Key => UTL_I18N.STRING_TO_RAW ('3NCR1PTS4T44C0M3R', 'AL32UTF8'));
+
+	RETURN V_OUT_DATOS;
+END;

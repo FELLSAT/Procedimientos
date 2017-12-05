@@ -1,0 +1,23 @@
+CREATE OR REPLACE PROCEDURE H3i_CONSU_COD_ALTERNATI_BARRIO
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+    V_CD_BARRIO IN VARCHAR2,
+    CV_1 OUT SYS_REFCURSOR
+)
+
+AS
+BEGIN
+
+	OPEN CV_1 FOR
+		SELECT CD_COD_ALT_BAR 
+		FROM BARRIO
+		WHERE CD_CODI_BAR = V_CD_BARRIO;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);		
+END;
+	
+	

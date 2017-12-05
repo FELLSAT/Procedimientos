@@ -1,0 +1,48 @@
+CREATE TABLE SPTYT.HIST_MEDI
+(
+  NU_NUME_HICL_HMED      NUMBER(10)             NOT NULL,
+  NU_NUME_HEVO_HMED      NUMBER(10)             NOT NULL,
+  NU_POSI_HMED           NUMBER(10)             NOT NULL,
+  NU_NUME_HMED           NUMBER(10)             NOT NULL,
+  CD_CODI_ARTI_HMED      VARCHAR2(16 CHAR)      NOT NULL,
+  NO_NOMB_ARTI_HMED      VARCHAR2(254 CHAR)     NOT NULL,
+  DE_UNME_HMED           VARCHAR2(254 CHAR),
+  DE_CTRA_HMED           VARCHAR2(254 CHAR),
+  DE_DOSIS_HMED          VARCHAR2(4000),
+  NU_CANT_HMED           NUMBER(10)             NOT NULL,
+  NU_ESTA_HMED           NUMBER(3)              NOT NULL,
+  NU_CANT_PEND_HMED      NUMBER(10),
+  NU_ESTA_ENT_HMED       NUMBER(3)              DEFAULT (0)                   NOT NULL,
+  NU_ESTA_DEVO_HMED      NUMBER(3)              DEFAULT (0)                   NOT NULL,
+  NU_ORDE_HMED           NUMBER(10),
+  NU_NUME_FORM_HMED      NUMBER(10),
+  FE_FECH_FORM_HMED      DATE,
+  DE_VIA_ADMIN_HMED      VARCHAR2(400),
+  DE_FREC_ADMIN_HMED     VARCHAR2(500),
+  NU_NUME_DUR_TRAT_HMED  NUMBER(5),
+  NU_UNFRE_HMED          NUMBER(10)             DEFAULT (0),
+  NU_AUTO_NOPM_HMED      NUMBER(10)             DEFAULT (0),
+  TX_OBSERV_HED          VARCHAR2(4000),
+  NU_TIPO_HMED           NUMBER(1)              DEFAULT (0)                   NOT NULL,
+  TX_OBSERV_HMED         VARCHAR2(4000),
+  NU_LABO_EVOL           NUMBER(20,2),
+  NUM_AUTORIZACION       NUMBER(10),
+  NU_CIR_HMED            NUMBER(10)             DEFAULT (0)
+)
+TABLESPACE USERS
+PCTUSED    0
+PCTFREE    10
+INITRANS   1
+MAXTRANS   255
+STORAGE    (
+            INITIAL          64K
+            NEXT             1M
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+           )
+LOGGING 
+NOCOMPRESS 
+NOCACHE
+MONITORING;

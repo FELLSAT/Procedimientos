@@ -1,0 +1,24 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_CONSULTAFIRMA_MED
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_CODMED IN VARCHAR2,
+  cv_1 OUT SYS_REFCURSOR
+)
+AS
+
+BEGIN
+
+   OPEN  cv_1 FOR
+      SELECT NU_FIRMA 
+        FROM USUARIOS U
+               JOIN MEDICOS M   ON U.NU_DOCU_USUA = M.NU_DOCU_MED
+               AND U.NU_TIPD_USUA = M.NU_TIPD_MED
+       WHERE  M.CD_CODI_MED = v_CODMED
+                AND NU_FIRMA IS NOT NULL AND ROWNUM <= 1 ;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END H3i_SP_CONSULTAFIRMA_MED;

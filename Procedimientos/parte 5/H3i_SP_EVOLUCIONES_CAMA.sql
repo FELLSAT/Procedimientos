@@ -1,0 +1,35 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_EVOLUCIONES_CAMA
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_NUM_REG_ADM_PAC IN NUMBER,
+  cv_1 OUT SYS_REFCURSOR
+)
+AS
+
+BEGIN
+
+    OPEN  cv_1 FOR
+        SELECT NO_NOMB_ESP ,
+             FE_FECH_HEVO ,
+             NU_NUME_LABO ,
+             NU_NUME_HICL ,
+             NU_NUME_HEVO 
+        FROM HIST_EVOLUCION 
+        INNER JOIN HISTORIACLINICA   
+            ON NU_NUME_HICL_HEVO = NU_NUME_HICL
+        INNER JOIN LABORATORIO    
+            ON NU_NUME_LABO_HICL = NU_NUME_LABO
+        INNER JOIN MOVI_CARGOS    
+            ON NU_NUME_MOVI_LABO = NU_NUME_MOVI
+        INNER JOIN ESPECIALIDADES   
+            ON CD_CODI_ESP_HEVO = CD_CODI_ESP
+        WHERE  NU_NUME_REG_MOVI = v_NUM_REG_ADM_PAC
+        ORDER BY FE_FECH_HEVO DESC ;
+   DBMS_OUTPUT.PUT_LINE('PROCESO H3i_SP_EVOLUCIONES_CAMA CREADO');
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

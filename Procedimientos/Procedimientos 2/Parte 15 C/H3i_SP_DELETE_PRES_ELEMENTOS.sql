@@ -1,0 +1,18 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_DELETE_PRES_ELEMENTOS
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_ID_ELEMENTO IN NUMBER
+)
+AS
+
+BEGIN
+
+	DELETE PRES_ELEMENTOS
+	WHERE  ID_ELEMENTO = v_ID_ELEMENTO;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

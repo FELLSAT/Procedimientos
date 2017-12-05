@@ -1,0 +1,105 @@
+CREATE OR REPLACE PROCEDURE SP_LOGIN_ACOMER_OPERACION_T
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+	V_IN_USER_ID IN GEN0011.TERCOD%TYPE, -- IDENTIFICADOR CON EL QUE EL USUARIO HACE LOGIN 
+	--V_IN_USER_PASS IN VARCHAR2,			 -- CONTRASENA DE ACCESO 
+	V_IN_ACT_PASS IN VARCHAR2,			 -- CLAVE DE ACTIVACION O CREACION DE CONTRASENA
+	V_OUT_USER_ID OUT GEN0011.TERCOD%TYPE, -- IDENTIFICACION DEL USUARIO QUE SE HIZO LOGIN
+	V_OUT_MESS OUT VARCHAR2,			   -- MENSAJE DE SALIDA
+	V_OUT_COD_MESS OUT NUMBER			   -- CODIGO DE MENSAJE
+)
+AS
+	V_EXISTE NUMBER; 							-- VALIDA EXISTENCIA DEL USUARIO
+	V_ULTIMO_LOG DATE; 							-- FECHA DE CREACION O CAMBIO DE CONTRASENA
+	V_INTENTOS TAB_LOGIN_ACOMER.NUM_INTENTOS%TYPE; 	-- NUMERO DE INTENTOS DE LOGIN
+	V_PASS TAB_LOGIN_ACOMER.CONTRAS_LOG%TYPE;		-- CONTRASENA REGISTRADA PARA EL USUAIRO
+	V_ACTIVACION TAB_LOGIN_ACOMER.ID_ACTIVACION%TYPE;-- CODIGO DE ACTIVACION 
+BEGIN
+	BEGIN
+		-- =============================================
+		-- SE VALIDA QUE EL USUARIO SI EXISTA EN LA BD
+		-- DE LO CONTRARIO SERA NOTIFICADO 
+		SELECT GN.TERCOD
+		INTO V_OUT_USER_ID
+		FROM GEN0011  GN
+		WHERE GN.TERCOD = V_IN_USER_ID
+			AND ROWNUM = 1;
+	EXCEPTION 
+		WHEN NO_DATA_FOUND THEN
+			V_OUT_USER_ID := NULL;
+			V_OUT_MESS := 'El usuario ingresado no es valido o no existe';
+			V_OUT_COD_MESS := -20001;
+	END;
+
+	IF(V_OUT_USER_ID IS NOT NULL) THEN
+		-- =============================================
+		-- SE VALIDA QUE EL USUARIO INGRESADO YA ESTA REGISTRADO
+		-- EN USUARIOS DE LOGIN 
+		-- EN SU DEFECTO DEBE CREAR UNA CONTRASENA
+		SELECT COUNT(*)
+		INTO V_EXISTE
+		FROM TAB_LOGIN_ACOMER TLA
+		WHERE TLA.USUARIO_LOG = FN_ENCRIPTAR_DATOS(V_OUT_USER_ID);
+		-- =============================================
+		IF(V_EXISTE = 0) THEN
+			BEGIN
+				-- =============================================
+				-- SI NO EXISTE EL USUAIRO SE NOTIFICA 
+				V_OUT_USER_ID := V_IN_USER_ID;
+				V_OUT_COD_MESS := 0;
+				V_OUT_MESS := 'El usuario '||V_IN_USER_ID||' no existe, debe crearlo y asignarle una contraseña';
+
+			END;
+
+		ELSE
+
+			BEGIN
+				-- =============================================
+				-- TRAEMOS EL CODIGO DE ACTIVACION 
+				-- Y LA FECHA DE CREACION O MODIFICACION
+				SELECT ID_ACTIVACION, FEC_CREA_MOD
+				INTO V_ACTIVACION, V_ULTIMO_LOG
+				FROM TAB_LOGIN_ACOMER
+				WHERE USUARIO_LOG = FN_ENCRIPTAR_DATOS(V_OUT_USER_ID);
+			EXCEPTION
+				WHEN OTHERS THEN
+					RAISE_APPLICATION_ERROR(-20000, 'Error: '||SQLCODE||' '||SQLERRM);
+			END;
+
+			-- =============================================
+			-- COMPARA LA CLAVE DE ACTIVACION CON LA
+			-- ALMACENADA EN BD 
+			IF(V_ACTIVACION = V_IN_ACT_PASS) THEN
+				-- =============================================
+				-- SI LA FECHA CULMINO EL LAPSO DE TIEMPO 
+				-- ESTIPULADO DEBE CREAR UNA CONTRASENA NUEVA 
+				-- SI NO SOLICITAR UNA UNA NUEVA
+				IF(TO_DATE(V_ULTIMO_LOG, 'DD-MM-YYYY')+5 >= TO_DATE(SYSDATE, 'DD-MM-YYYY')) THEN
+					BEGIN
+						V_OUT_USER_ID := V_IN_USER_ID;
+						V_OUT_COD_MESS := 10;
+						V_OUT_MESS := 'Acceso correcto, por favor cree una clave para su cuenta';
+					END;
+
+				ELSE
+
+					BEGIN
+						V_OUT_USER_ID := NULL;
+						V_OUT_COD_MESS := 11;
+						V_OUT_MESS := 'Su periodo de activacion ha caducado, por favor genera una nueva solicitud';
+					END;
+				END IF;
+
+			ELSE
+
+				BEGIN
+					V_OUT_USER_ID := NULL;
+					V_OUT_COD_MESS := 12;
+					V_OUT_MESS := 'Su lilnk de activacion no es valido';
+				END;
+			END IF;
+		END IF;
+	END IF;
+END;

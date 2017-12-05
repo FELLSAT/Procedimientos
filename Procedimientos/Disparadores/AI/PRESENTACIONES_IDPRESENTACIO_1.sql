@@ -1,0 +1,9 @@
+CREATE OR REPLACE TRIGGER PRESENTACIONES_IDPRESENTACIO_1 BEFORE INSERT ON Presentaciones
+FOR EACH ROW
+DECLARE 
+    
+BEGIN
+    SELECT Presentaciones_IdPresentacion_.NEXTVAL
+    INTO   :NEW.IdPresentacion
+    FROM   dual;
+END;

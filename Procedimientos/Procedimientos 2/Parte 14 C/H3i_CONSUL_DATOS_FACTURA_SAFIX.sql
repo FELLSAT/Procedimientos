@@ -1,0 +1,26 @@
+CREATE OR REPLACE PROCEDURE H3i_CONSUL_DATOS_FACTURA_SAFIX
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+    V_NU_NUME_MOVI IN NUMBER,
+    CV_1 OUT SYS_REFCURSOR
+)
+
+AS
+    V_NU_NUME_FAC_DFT VARCHAR2(50) := '';
+BEGIN
+
+    SELECT NU_NUME_FAC_DFT
+    INTO V_NU_NUME_FAC_DFT
+    FROM R_HCP_MOVI
+    WHERE NU_NUME_MOVI = V_NU_NUME_MOVI;
+
+    OPEN CV_1 FOR
+        SELECT V_NU_NUME_FAC_DFT 
+        FROM DUAL;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

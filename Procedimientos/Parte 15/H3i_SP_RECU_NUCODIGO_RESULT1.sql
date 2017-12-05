@@ -1,0 +1,18 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_RECU_NUCODIGO_RESULT1
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+	CV_1 OUT SYS_REFCURSOR
+)
+AS
+BEGIN 
+	
+	OPEN CV_1 FOR
+		SELECT NVL((MAX(TO_NUMBER(NU_NUME_RESU))+1),1) CODIGO 
+ 		FROM RESULTADOS1;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

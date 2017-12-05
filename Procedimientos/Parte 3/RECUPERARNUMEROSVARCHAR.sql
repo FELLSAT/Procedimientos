@@ -1,0 +1,48 @@
+CREATE OR REPLACE FUNCTION RECUPERARNUMEROSVARCHAR
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  IV_STRING_IN IN VARCHAR2
+)
+RETURN VARCHAR2
+AS 
+   V_STRING_IN VARCHAR2(200) := IV_STRING_IN;  
+   V_SUB VARCHAR2(1);
+BEGIN
+   
+   WHILE POSICIONCARACTERNONUM(V_STRING_IN) > 0 
+   LOOP       
+      BEGIN
+         V_SUB := SUBSTR(V_STRING_IN, POSICIONCARACTERNONUM(V_STRING_IN), 1) ;
+         V_STRING_IN := REPLACE(V_STRING_IN, V_SUB, ' ') ;
+      
+      END;
+   END LOOP;
+
+   WHILE POSICIONCARACTERGUION(V_STRING_IN) > 0 
+   LOOP 
+      
+      BEGIN
+         V_SUB := SUBSTR(V_STRING_IN, POSICIONCARACTERGUION(V_STRING_IN), 1) ;
+         V_STRING_IN := REPLACE(V_STRING_IN, V_SUB, ' ') ;
+      
+      END;
+   END LOOP;
+
+   V_STRING_IN := REPLACE(V_STRING_IN, '[', ' ') ;
+
+   WHILE INSTR(V_STRING_IN, '  ', 0) > 0 
+   LOOP 
+      V_STRING_IN := REPLACE(V_STRING_IN, '  ', ' ') ;
+   END LOOP;
+
+   RETURN V_STRING_IN;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+        
+END;
+
+

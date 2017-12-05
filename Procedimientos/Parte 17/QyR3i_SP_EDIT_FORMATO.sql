@@ -1,0 +1,26 @@
+CREATE OR REPLACE PROCEDURE QyR3i_SP_EDIT_FORMATO
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+    v_ID_FORMATO IN NUMBER,
+    v_FECHA_REGISTRO IN DATE,
+    v_NOMBRE IN VARCHAR2,
+    v_CONTENIDO IN VARCHAR2,
+    v_ESTADO IN NUMBER
+)
+AS
+
+BEGIN
+
+    UPDATE QYR_FORMATO
+    SET FE_FECH_INI_FOR = v_FECHA_REGISTRO,
+        TX_NOMB_FOR = v_NOMBRE,
+        TX_CONT_FOR = v_CONTENIDO,
+        NU_ESTA_FOR = v_ESTADO
+    WHERE  NU_NUME_FOR = v_ID_FORMATO;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

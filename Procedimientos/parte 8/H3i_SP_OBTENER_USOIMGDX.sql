@@ -1,0 +1,28 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_OBTENER_USOIMGDX
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_IDFormato IN NUMBER,
+  cv_1 OUT SYS_REFCURSOR
+)
+AS
+   v_INTERFAZFORMATO NUMBER(1,0);
+
+BEGIN
+
+   SELECT NU_ESTA_PROP_HIEX 
+
+     INTO v_INTERFAZFORMATO
+     FROM HIST_EXTEND HE
+            JOIN PROP_EXTEND PE   ON HE.CD_CODI_PREX_HIEX = PE.CD_CODI_PREX
+    WHERE  PE.TX_NOMB_PREX = 'IMAGENDX'
+             AND NU_NUME_PLHI_HIEX = v_IDFORMATO;
+   OPEN  cv_1 FOR
+      SELECT NVL(v_INTERFAZFORMATO, 0) InterfaceActiva  
+        FROM DUAL  ;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

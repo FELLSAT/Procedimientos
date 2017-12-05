@@ -1,0 +1,21 @@
+CREATE OR REPLACE PROCEDURE H3I_SP_ESCALA_CONTROL_INS
+(
+  v_NumeHicli IN NUMBER,
+  v_NuIndice IN NUMBER,
+  v_numeroControl IN NUMBER,
+  v_Tipo IN NUMBER,
+  v_ItemDetalle IN NUMBER,
+  v_Valor IN VARCHAR2
+)
+AS
+
+BEGIN
+
+   INSERT INTO HIST_ESCALA
+     ( NU_NUME_HICL_HIES, NU_INDI_HIES, NU_CTRL_HIES, NU_TIPO_HIES, NU_ITEMDET_HIES, NU_VALO_HIES )
+     VALUES ( v_NumeHicli, v_NuIndice, v_numeroControl, v_Tipo, v_ItemDetalle, v_Valor );
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

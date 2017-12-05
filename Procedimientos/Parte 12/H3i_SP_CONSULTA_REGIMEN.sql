@@ -1,0 +1,22 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_CONSULTA_REGIMEN
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_CODIGOREGIMEN IN NVARCHAR2 DEFAULT NULL ,
+  cv_1 OUT SYS_REFCURSOR
+)
+AS
+
+BEGIN
+
+   	OPEN  cv_1 FOR
+      	SELECT ID_CODI_TIUS ,
+            DE_DESC_TIUS 
+        FROM TIPOUSUARIO 
+       	WHERE  ID_CODI_TIUS = NVL(v_CODIGOREGIMEN, ID_CODI_TIUS) ;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

@@ -1,0 +1,50 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_CREA_REQUISITOS
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_TX_CODIGO_ASIG_REQ IN CHAR,
+  v_NOM_REQUISITO_REQ IN VARCHAR2,
+  v_NUM_PROCE_REQ IN NUMBER,
+  v_ESTADO_REQ IN NUMBER
+)
+AS
+   v_temp NUMBER(1, 0) := 0;
+
+BEGIN
+
+   BEGIN
+      SELECT 1 INTO v_temp
+        FROM DUAL
+       WHERE EXISTS ( SELECT NOM_REQUISITO_REQ 
+                      FROM REQUISITOS 
+                       WHERE  NOM_REQUISITO_REQ = v_NOM_REQUISITO_REQ );
+   EXCEPTION
+      WHEN OTHERS THEN
+         NULL;
+   END;
+      
+   IF v_temp = 1 THEN
+    
+   BEGIN
+      UPDATE REQUISITOS
+         SET TX_CODIGO_ASIG_REQ = v_TX_CODIGO_ASIG_REQ,
+             NUM_PROCE_REQ = v_NUM_PROCE_REQ,
+             ESTADO_REQ = v_ESTADO_REQ
+       WHERE  NOM_REQUISITO_REQ = v_NOM_REQUISITO_REQ;
+   
+   END;
+   ELSE
+   
+   BEGIN
+      INSERT INTO REQUISITOS
+        ( TX_CODIGO_ASIG_REQ, NOM_REQUISITO_REQ, NUM_PROCE_REQ, ESTADO_REQ )
+        VALUES ( v_TX_CODIGO_ASIG_REQ, v_NOM_REQUISITO_REQ, v_NUM_PROCE_REQ, v_ESTADO_REQ );
+   
+   END;
+   END IF;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END H3i_SP_CREA_REQUISITOS;

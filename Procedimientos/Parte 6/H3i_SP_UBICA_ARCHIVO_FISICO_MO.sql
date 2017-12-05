@@ -1,0 +1,20 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_UBICA_ARCHIVO_FISICO_MO
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_HICL IN VARCHAR2,
+  v_UBICACION IN VARCHAR2
+)
+AS
+
+BEGIN
+
+   UPDATE RUTA_ARCHIVO_FISICO
+      SET TX_UBICA_RUAR = v_UBICACION
+    WHERE  NU_HIST_PAC_RUAR = v_HICL;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

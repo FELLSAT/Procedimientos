@@ -1,0 +1,33 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_CONS_VALESCAL_REGIS_HC
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_NU_NUME_HICL IN NUMBER,
+  v_NU_NUME_COHI IN NUMBER,
+  v_NU_INDI_RPC IN NUMBER,
+  v_NU_TIPO_COHI IN NUMBER,
+  v_ES_DECIMAL IN NUMBER,
+  cv_1 OUT SYS_REFCURSOR
+)
+AS
+
+BEGIN
+
+   IF v_NU_TIPO_COHI <> 112 THEN
+    OPEN  cv_1 FOR
+      SELECT FN_VALORCONCEPTOHC(v_NU_NUME_HICL, v_NU_NUME_COHI, v_NU_INDI_RPC, v_NU_TIPO_COHI, v_ES_DECIMAL) CODIGO  
+        FROM DUAL  ;
+   ELSE
+      OPEN  cv_1 FOR
+         SELECT DE_DESC_HITE Nombre  ,
+                TX_CODCOMPL_HITE CODIGO  
+           FROM HIST_TEXT 
+          WHERE  NU_NUME_HICL_HITE = v_NU_NUME_HICL
+                   AND NU_INDI_HITE = v_NU_INDI_RPC ;
+   END IF;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

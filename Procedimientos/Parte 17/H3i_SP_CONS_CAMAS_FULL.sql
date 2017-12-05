@@ -1,0 +1,45 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_CONS_CAMAS_FULL
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+    v_PARAMETRO IN VARCHAR2,
+    cv_1 OUT SYS_REFCURSOR
+)
+AS
+
+BEGIN
+
+    OPEN  cv_1 FOR
+        SELECT CD_CODI_CAMA CODIGO  ,
+            DE_DESC_CAMA NOMBRE  ,
+            DE_DESC_HABI HABITACION  ,
+            DE_DESC_PABE PABELLON  ,
+            DE_DESC_PISO PISO  ,
+            CASE NU_ESTA_CAMA
+                WHEN 1 THEN 'OCUPADA'
+                WHEN 2 THEN 'DESOCUPADA'
+                WHEN 3 THEN 'INACTIVA'
+                WHEN 4 THEN 'DESINFECCION'
+                WHEN 5 THEN 'ORDEN SALIDA'   
+            END ESTADO  ,
+            NO_NOMB_ESP ESPECIALIDAD  ,
+            CASE NVL(CAMAS.ESTA_HABILITADO, 2)
+                WHEN 0 THEN 'NO'
+                WHEN 1 THEN 'SI'
+                WHEN 2 THEN 'NO DEFINIDO'   
+            END HABILITADO  
+        FROM CAMAS 
+        INNER JOIN HABITACIONES    
+            ON CAMAS.CD_CODI_HABI_CAMA = HABITACIONES.CD_CODI_HABI
+        INNER JOIN PABELLONES    
+            ON HABITACIONES.CD_CODI_PABE_HABI = PABELLONES.CD_CODI_PABE
+        INNER JOIN PISOS    
+            ON PABELLONES.CD_CODI_PISO_PABE = PISOS.CD_CODI_PISO
+        INNER JOIN ESPECIALIDADES    
+            ON CAMAS.CD_CODI_ESP_CAMA = ESPECIALIDADES.CD_CODI_ESP ;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

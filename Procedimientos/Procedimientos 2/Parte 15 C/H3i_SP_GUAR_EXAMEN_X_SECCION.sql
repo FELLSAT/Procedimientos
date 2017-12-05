@@ -1,0 +1,21 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_GUAR_EXAMEN_X_SECCION
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_CODIGO_SEC IN VARCHAR2,
+  v_CODIGO_SER IN VARCHAR2
+)
+AS
+
+BEGIN
+
+	INSERT INTO R_SERV_SEC( 
+		CD_CODI_SER, CD_CODI_SEC )
+	VALUES ( 
+		v_CODIGO_SER, v_CODIGO_SEC );
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

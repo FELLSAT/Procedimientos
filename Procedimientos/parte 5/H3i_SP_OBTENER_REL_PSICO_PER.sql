@@ -1,0 +1,27 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_OBTENER_REL_PSICO_PER-- CREANDO PROCEDIMIENTO ENCARGADO DE OBTENER RELACIONES PSICOLOGICAS DE UNA PERSONA QUE CONFORMA EL GENOGRAMA
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_CD_PERSONA IN NUMBER,
+  v_CD_ARBOL IN NUMBER,
+  cv_1 OUT SYS_REFCURSOR
+)
+AS
+
+BEGIN
+
+   OPEN  cv_1 FOR
+      SELECT NU_NUME_PER_B ,
+             TIPO 
+        FROM HIST_GENO_REL_FAM 
+       WHERE  NU_NUME_PER_A = v_CD_PERSONA
+                AND NU_NUME_PER_B IN ( SELECT NU_NUME_PERS 
+                                       FROM HIST_GENO_PERSONA_ARBOL 
+                                        WHERE  NU_NUME_ARBOL = v_CD_ARBOL )
+    ;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

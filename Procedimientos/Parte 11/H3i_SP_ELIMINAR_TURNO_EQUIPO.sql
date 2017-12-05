@@ -1,0 +1,22 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_ELIMINAR_TURNO_EQUIPO
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_TURNO_EQUIPO IN NUMBER
+)
+AS
+
+BEGIN
+
+   DELETE TURNO_EQUIPO_DISP
+
+    WHERE  NU_AUTO_TUEQ_TEDI = v_TURNO_EQUIPO;
+   DELETE TURNO_EQUIPO
+
+    WHERE  NU_AUTO_TUEQ = v_TURNO_EQUIPO;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

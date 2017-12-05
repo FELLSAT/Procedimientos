@@ -1,0 +1,43 @@
+CREATE OR REPLACE PROCEDURE H3I_SP_ACT_PERIODOACADEMICO
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  iv_NU_AUTO_PEAC IN NUMBER DEFAULT NULL ,
+  v_TX_DENOMINA_PEAC IN VARCHAR2,
+  v_FE_INICIO_PEAC IN DATE,
+  v_FE_FINAL_PEAC IN DATE,
+  v_NU_ESTADO_PEAC IN NUMBER
+)
+AS
+   v_NU_AUTO_PEAC NUMBER := iv_NU_AUTO_PEAC;
+
+BEGIN
+
+    IF v_NU_AUTO_PEAC = 0 THEN
+        v_NU_AUTO_PEAC := NULL ;
+    END IF;
+
+    IF v_NU_AUTO_PEAC IS NOT NULL THEN
+    
+        BEGIN
+            UPDATE PERIODO_ACADEMICO
+            SET TX_DENOMINA_PEAC = v_TX_DENOMINA_PEAC,
+                FE_INICIO_PEAC = v_FE_INICIO_PEAC,
+                FE_FINAL_PEAC = v_FE_FINAL_PEAC,
+                NU_ESTADO_PEAC = v_NU_ESTADO_PEAC
+            WHERE  NU_AUTO_PEAC = v_NU_AUTO_PEAC;       
+       END;
+    ELSE
+   
+        BEGIN
+            INSERT INTO PERIODO_ACADEMICO
+            (TX_DENOMINA_PEAC, FE_INICIO_PEAC, FE_FINAL_PEAC, NU_ESTADO_PEAC )
+            VALUEs ( v_TX_DENOMINA_PEAC, TO_DATE(v_FE_INICIO_PEAC,'dd/mm/yyyy'), TO_DATE(v_FE_FINAL_PEAC,'dd/mm/yyyy'), v_NU_ESTADO_PEAC );
+         END;
+    END IF;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

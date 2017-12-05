@@ -1,0 +1,31 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_LIMPIAR_REL_MARIT_PER -- CREANDO PROCEDIMIENTO ENCARGADO DE LIMPIAR RELACIONES MARITALES DE UNA PERSONA QUE CONFORMA EL GENOGRAMA
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_CD_PERSONA IN NUMBER,
+  v_CD_ARBOL IN NUMBER
+)
+AS
+
+BEGIN
+
+   DELETE HIST_GENO_REL_MARIT
+
+    WHERE  NU_NUME_PER_A = v_CD_PERSONA
+             AND NU_NUME_PER_B IN ( SELECT NU_NUME_PERS 
+                                    FROM HIST_GENO_PERSONA_ARBOL 
+                                     WHERE  NU_NUME_ARBOL = v_CD_ARBOL )
+   ;
+   DELETE HIST_GENO_REL_MARIT
+
+    WHERE  NU_NUME_PER_B = v_CD_PERSONA
+             AND NU_NUME_PER_A IN ( SELECT NU_NUME_PERS 
+                                    FROM HIST_GENO_PERSONA_ARBOL 
+                                     WHERE  NU_NUME_ARBOL = v_CD_ARBOL )
+   ;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

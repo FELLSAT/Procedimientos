@@ -1,0 +1,51 @@
+CREATE OR REPLACE PROCEDURE H3I_SP_ACT_HG /*PROCEDIMIENTO ALMACENADO PARA CREAR Y ACTUALIZAR LOS HORARIOS ACADEMICOS*/
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_NU_AUTO_HOGR IN NUMBER,
+  v_NU_AUTO_GRAP_HOGR IN NUMBER,
+  v_NU_DIA_HOGR IN NUMBER,
+  v_FE_HORAINICIAL_HOGR IN DATE,
+  v_FE_HORAFINAL_HOGR IN DATE
+)
+AS
+   v_temp NUMBER(1, 0) := 0;
+
+BEGIN
+
+    BEGIN
+        SELECT 1 INTO v_temp
+        FROM DUAL
+        WHERE NOT EXISTS( SELECT * 
+                          FROM HORARIO_GRUPO 
+                          WHERE  NU_AUTO_HOGR = v_NU_AUTO_HOGR );
+    EXCEPTION
+        WHEN OTHERS THEN
+            NULL;
+    END;
+      
+    IF v_temp = 1 THEN  
+
+        BEGIN
+            INSERT INTO HORARIO_GRUPO
+                (NU_AUTO_GRAP_HOGR, NU_DIA_HOGR, FE_HORAINICIAL_HOGR, FE_HORAFINAL_HOGR )
+            VALUES ( v_NU_AUTO_GRAP_HOGR, v_NU_DIA_HOGR, v_FE_HORAINICIAL_HOGR, v_FE_HORAFINAL_HOGR );   
+        END; 
+
+    ELSE
+   
+        BEGIN
+            UPDATE HORARIO_GRUPO
+            SET NU_AUTO_GRAP_HOGR = v_NU_AUTO_GRAP_HOGR,
+                NU_DIA_HOGR = v_NU_DIA_HOGR,
+                FE_HORAINICIAL_HOGR = v_FE_HORAINICIAL_HOGR,
+                FE_HORAFINAL_HOGR = v_FE_HORAFINAL_HOGR
+            WHERE  NU_AUTO_HOGR = v_NU_AUTO_HOGR;   
+        END;
+   END IF;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

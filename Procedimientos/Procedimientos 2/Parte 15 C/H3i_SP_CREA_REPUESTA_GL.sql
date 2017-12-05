@@ -1,0 +1,47 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_CREA_REPUESTA_GL
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_NU_AUTO_GLOS IN NUMBER,
+  v_FECH_RECEP_REGL IN DATE,
+  v_FECH_REGIS_REGL IN DATE,
+  v_USER_REGL IN NUMBER,
+  v_CONE_REGL IN NUMBER,
+  v_IMG_REGL IN RAW,
+  v_CERRADO IN NUMBER,
+  cv_1 OUT SYS_REFCURSOR
+)
+AS
+
+BEGIN
+
+    INSERT INTO RESPUESTA_GLOSA3i( 
+        NU_AUTO_GLOS, FECH_RECEP_REGL, 
+        FECH_REGIS_REGL, USER_REGL, 
+        CONE_REGL, IMG_REGL, 
+        CERRADO )
+    VALUES ( 
+        v_NU_AUTO_GLOS, v_FECH_RECEP_REGL, 
+        v_FECH_RECEP_REGL, v_USER_REGL, 
+        v_CONE_REGL, v_IMG_REGL, 
+        v_CERRADO );
+
+    -- ACTUALIZAMOS EL ESTADO DE GLOSA A 'RESPUESTA'           
+    UPDATE GLOSA3i
+    SET NU_AUTO_ESGL_GLOS = ( SELECT NU_AUTO_ESGLO 
+                              FROM ESTADO_GLOSA3i 
+                              WHERE  TX_NOMBRE_ESGLO = 'RESPUESTA' 
+                                AND ROWNUM <= 1 )
+    WHERE  NU_AUTO_GLOS = v_NU_AUTO_GLOS;
+
+
+    OPEN  cv_1 FOR
+        SELECT NU_AUTO_GLOS 
+        FROM GLOSA3i
+        WHERE NU_AUTO_GLOS = (SELECT MAX(NU_AUTO_GLOS) FROM GLOSA3i);
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

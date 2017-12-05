@@ -1,0 +1,222 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_INFORME_GLOSA3i
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  V_NUM_FACTURA IN VARCHAR2,
+  V_TIPO_REPORTE IN VARCHAR2,
+  V_FECHA_INICIO IN DATE,
+  V_FECHA_FINAL IN DATE,
+  CV_1 OUT SYS_REFCURSOR
+)
+
+AS
+BEGIN
+    IF (V_TIPO_REPORTE = 1) THEN
+
+        BEGIN
+            OPEN CV_1 FOR
+                SELECT DETALLE_GLOSA3i.NU_NUME_FACU_DEGL NU_NUME_FACU_DEGL,
+                    RESPUESTA_GLOSA3i.NU_AUTO_GLOS NU_AUTO_GLOS,
+                    RESPUESTA_GLOSA3i.FECH_RECEP_REGL FECH_RECEP_REGL,
+                    RESPUESTA_GLOSA3i.FECH_REGIS_REGL FECH_REGIS_REGL,
+                    ITEM_RESPUESTA_GLOSA3i.CONF_RES_RIGL CONF_RES_RIGL,
+                    ITEM_RESPUESTA_GLOSA3i.TX_OBS_RIGL TX_OBS_RIGL,
+                    ITEM_RESPUESTA_GLOSA3i.TIP_RES_RIGL TIP_RES_RIGL,
+                    CASE ITEM_RESPUESTA_GLOSA3i.TIP_RES_RIGL 
+                        WHEN 0 THEN 'Total'
+                        WHEN 1 THEN 'Parcial'
+                    END AUXTIPO,
+                    ITEM_RESPUESTA_GLOSA3i.VAL_ACEP_RIGL VAL_ACEP_RIGL,
+                    RESPUESTA_GLOSA3I.CERRADO CERRADO,
+                    CASE RESPUESTA_GLOSA3I.CERRADO
+                        WHEN 0 THEN 'No'
+                        WHEN 1 THEN 'Si'
+                    END AUXCERRADO
+                FROM ((RESPUESTA_GLOSA3i RESPUESTA_GLOSA3i
+                INNER JOIN GLOSA3i GLOSA3i
+                    ON (RESPUESTA_GLOSA3i.NU_AUTO_GLOS = GLOSA3i.NU_AUTO_GLOS))
+                INNER JOIN ITEM_RESPUESTA_GLOSA3i ITEM_RESPUESTA_GLOSA3i
+                    ON (ITEM_RESPUESTA_GLOSA3i.NU_AUTO_REGL = RESPUESTA_GLOSA3i.NU_AUTO_REGL))
+                INNER JOIN DETALLE_GLOSA3i DETALLE_GLOSA3i
+                    ON (DETALLE_GLOSA3i.NU_AUTO_GLOS_DEGL = GLOSA3i.NU_AUTO_GLOS)
+                WHERE DETALLE_GLOSA3i.NU_NUME_FACU_DEGL = V_NUM_FACTURA 
+                    AND GLOSA3i.FE_GENERA_GLOS >= V_FECHA_INICIO AND GLOSA3i.FE_GENERA_GLOS <= V_FECHA_FINAL;
+        END;
+
+    ELSIF (V_TIPO_REPORTE = 2) THEN
+                
+        BEGIN
+            OPEN CV_1 FOR
+                SELECT DETALLE_GLOSA3i.NU_NUME_FACU_DEGL NU_NUME_FACU_DEGL,
+                    RESPUESTA_GLOSA3i.NU_AUTO_GLOS NU_AUTO_GLOS,
+                    RESPUESTA_GLOSA3i.FECH_RECEP_REGL FECH_RECEP_REGL,
+                    RESPUESTA_GLOSA3i.FECH_REGIS_REGL FECH_REGIS_REGL,
+                    ITEM_RESPUESTA_GLOSA3i.CONF_RES_RIGL CONF_RES_RIGL,
+                    ITEM_RESPUESTA_GLOSA3i.TX_OBS_RIGL TX_OBS_RIGL,
+                    ITEM_RESPUESTA_GLOSA3i.TIP_RES_RIGL TIP_RES_RIGL,
+                    CASE ITEM_RESPUESTA_GLOSA3i.TIP_RES_RIGL 
+                        WHEN 0 THEN 'Total'
+                        WHEN 1 THEN 'Parcial'
+                    END AUXTIPO,
+                    ITEM_RESPUESTA_GLOSA3i.VAL_ACEP_RIGL VAL_ACEP_RIGL,
+                    RESPUESTA_GLOSA3I.CERRADO CERRADO,
+                    CASE RESPUESTA_GLOSA3I.CERRADO
+                        WHEN 0 THEN 'No'
+                        WHEN 1 THEN 'Si'
+                    END AUXCERRADO
+                FROM ((RESPUESTA_GLOSA3i RESPUESTA_GLOSA3i
+                INNER JOIN GLOSA3i GLOSA3i
+                    ON (RESPUESTA_GLOSA3i.NU_AUTO_GLOS = GLOSA3i.NU_AUTO_GLOS))
+                INNER JOIN ITEM_RESPUESTA_GLOSA3i ITEM_RESPUESTA_GLOSA3i
+                    ON (ITEM_RESPUESTA_GLOSA3i.NU_AUTO_REGL = RESPUESTA_GLOSA3i.NU_AUTO_REGL))
+                INNER JOIN DETALLE_GLOSA3i DETALLE_GLOSA3i
+                    ON (DETALLE_GLOSA3i.NU_AUTO_GLOS_DEGL = GLOSA3i.NU_AUTO_GLOS)
+                WHERE DETALLE_GLOSA3i.NU_NUME_FACU_DEGL = V_NUM_FACTURA 
+                    AND GLOSA3i.FE_GENERA_GLOS >= V_FECHA_INICIO 
+                    AND GLOSA3i.FE_GENERA_GLOS <= V_FECHA_FINAL 
+                    AND CERRADO = 0;
+        END;
+
+    ELSIF (V_TIPO_REPORTE = 3) THEN
+
+        BEGIN
+            OPEN CV_1 FOR
+                SELECT DETALLE_GLOSA3i.NU_NUME_FACU_DEGL NU_NUME_FACU_DEGL,
+                      RESPUESTA_GLOSA3i.NU_AUTO_GLOS NU_AUTO_GLOS,
+                      RESPUESTA_GLOSA3i.FECH_RECEP_REGL FECH_RECEP_REGL,
+                      RESPUESTA_GLOSA3i.FECH_REGIS_REGL FECH_REGIS_REGL,
+                      ITEM_RESPUESTA_GLOSA3i.CONF_RES_RIGL CONF_RES_RIGL,
+                      ITEM_RESPUESTA_GLOSA3i.TX_OBS_RIGL TX_OBS_RIGL,
+                      ITEM_RESPUESTA_GLOSA3i.TIP_RES_RIGL TIP_RES_RIGL,
+                      CASE ITEM_RESPUESTA_GLOSA3i.TIP_RES_RIGL 
+                          WHEN 0 THEN 'Total'
+                          WHEN 1 THEN 'Parcial'
+                      END AUXTIPO,
+                      ITEM_RESPUESTA_GLOSA3i.VAL_ACEP_RIGL VAL_ACEP_RIGL,
+                      RESPUESTA_GLOSA3I.CERRADO CERRADO,
+                      CASE RESPUESTA_GLOSA3I.CERRADO
+                          WHEN 0 THEN 'No'
+                          WHEN 1 THEN 'Si'
+                      END AUXCERRADO
+                  FROM ((RESPUESTA_GLOSA3i RESPUESTA_GLOSA3i
+                  INNER JOIN GLOSA3i GLOSA3i
+                      ON (RESPUESTA_GLOSA3i.NU_AUTO_GLOS = GLOSA3i.NU_AUTO_GLOS))
+                  INNER JOIN ITEM_RESPUESTA_GLOSA3i ITEM_RESPUESTA_GLOSA3i
+                      ON (ITEM_RESPUESTA_GLOSA3i.NU_AUTO_REGL =  RESPUESTA_GLOSA3i.NU_AUTO_REGL))
+                  INNER JOIN DETALLE_GLOSA3i DETALLE_GLOSA3i
+                      ON (DETALLE_GLOSA3i.NU_AUTO_GLOS_DEGL = GLOSA3i.NU_AUTO_GLOS)
+                  WHERE DETALLE_GLOSA3i.NU_NUME_FACU_DEGL = V_NUM_FACTURA 
+                      AND GLOSA3i.FE_GENERA_GLOS >= V_FECHA_INICIO 
+                      AND GLOSA3i.FE_GENERA_GLOS <= V_FECHA_FINAL 
+                      AND CERRADO = 1;
+        END;
+
+    ELSIF (V_TIPO_REPORTE = 4) THEN
+
+        BEGIN
+            OPEN CV_1 FOR
+                SELECT DETALLE_GLOSA3i.NU_NUME_FACU_DEGL NU_NUME_FACU_DEGL,
+                    RESPUESTA_GLOSA3i.NU_AUTO_GLOS NU_AUTO_GLOS,
+                    RESPUESTA_GLOSA3i.FECH_RECEP_REGL FECH_RECEP_REGL,
+                    RESPUESTA_GLOSA3i.FECH_REGIS_REGL FECH_REGIS_REGL,
+                    ITEM_RESPUESTA_GLOSA3i.CONF_RES_RIGL CONF_RES_RIGL,
+                    ITEM_RESPUESTA_GLOSA3i.TX_OBS_RIGL TX_OBS_RIGL,
+                    ITEM_RESPUESTA_GLOSA3i.TIP_RES_RIGL TIP_RES_RIGL,
+                    CASE ITEM_RESPUESTA_GLOSA3i.TIP_RES_RIGL 
+                        WHEN 0 THEN 'Total'
+                        WHEN 1 THEN 'Parcial'
+                    END AUXTIPO,
+                    ITEM_RESPUESTA_GLOSA3i.VAL_ACEP_RIGL VAL_ACEP_RIGL,
+                    RESPUESTA_GLOSA3I.CERRADO CERRADO,
+                    CASE RESPUESTA_GLOSA3I.CERRADO
+                        WHEN 0 THEN 'No'
+                        WHEN 1 THEN 'Si'
+                    END AUXCERRADO
+                FROM ((RESPUESTA_GLOSA3i RESPUESTA_GLOSA3i
+                INNER JOIN GLOSA3i GLOSA3i
+                    ON (RESPUESTA_GLOSA3i.NU_AUTO_GLOS = GLOSA3i.NU_AUTO_GLOS))
+                INNER JOIN ITEM_RESPUESTA_GLOSA3i ITEM_RESPUESTA_GLOSA3i
+                    ON (ITEM_RESPUESTA_GLOSA3i.NU_AUTO_REGL =
+                RESPUESTA_GLOSA3i.NU_AUTO_REGL))
+                INNER JOIN DETALLE_GLOSA3i DETALLE_GLOSA3i
+                    ON (DETALLE_GLOSA3i.NU_AUTO_GLOS_DEGL = GLOSA3i.NU_AUTO_GLOS)
+                WHERE DETALLE_GLOSA3i.NU_NUME_FACU_DEGL = V_NUM_FACTURA 
+                    AND GLOSA3i.FE_GENERA_GLOS >= V_FECHA_INICIO 
+                    AND GLOSA3i.FE_GENERA_GLOS <= V_FECHA_FINAL 
+                    AND TIP_RES_RIGL = 0;
+        END;
+
+    ELSIF (V_TIPO_REPORTE = 5) THEN
+
+        BEGIN
+            OPEN CV_1 FOR
+                SELECT DETALLE_GLOSA3i.NU_NUME_FACU_DEGL NU_NUME_FACU_DEGL,
+                    RESPUESTA_GLOSA3i.NU_AUTO_GLOS NU_AUTO_GLOS,
+                    RESPUESTA_GLOSA3i.FECH_RECEP_REGL FECH_RECEP_REGL,
+                    RESPUESTA_GLOSA3i.FECH_REGIS_REGL FECH_REGIS_REGL,
+                    ITEM_RESPUESTA_GLOSA3i.CONF_RES_RIGL CONF_RES_RIGL,
+                    ITEM_RESPUESTA_GLOSA3i.TX_OBS_RIGL TX_OBS_RIGL,
+                    ITEM_RESPUESTA_GLOSA3i.TIP_RES_RIGL TIP_RES_RIGL,
+                    CASE ITEM_RESPUESTA_GLOSA3i.TIP_RES_RIGL 
+                        WHEN 0 THEN 'Total'
+                        WHEN 1 THEN 'Parcial'
+                    END AUXTIPO,
+                    ITEM_RESPUESTA_GLOSA3i.VAL_ACEP_RIGL VAL_ACEP_RIGL,
+                    RESPUESTA_GLOSA3I.CERRADO CERRADO,
+                    CASE RESPUESTA_GLOSA3I.CERRADO
+                        WHEN 0 THEN 'No'
+                        WHEN 1 THEN 'Si'
+                    END AUXCERRADO
+                FROM ((RESPUESTA_GLOSA3i RESPUESTA_GLOSA3i
+                INNER JOIN GLOSA3i GLOSA3i
+                    ON (RESPUESTA_GLOSA3i.NU_AUTO_GLOS = GLOSA3i.NU_AUTO_GLOS))
+                INNER JOIN ITEM_RESPUESTA_GLOSA3i ITEM_RESPUESTA_GLOSA3i
+                    ON (ITEM_RESPUESTA_GLOSA3i.NU_AUTO_REGL = RESPUESTA_GLOSA3i.NU_AUTO_REGL))
+                INNER JOIN DETALLE_GLOSA3i DETALLE_GLOSA3i
+                    ON (DETALLE_GLOSA3i.NU_AUTO_GLOS_DEGL = GLOSA3i.NU_AUTO_GLOS)
+                WHERE DETALLE_GLOSA3i.NU_NUME_FACU_DEGL = V_NUM_FACTURA 
+                    AND GLOSA3i.FE_GENERA_GLOS >= V_FECHA_INICIO 
+                    AND GLOSA3i.FE_GENERA_GLOS <= V_FECHA_FINAL 
+                    AND TIP_RES_RIGL = 1 ;
+        END;
+
+
+    ELSIF (V_TIPO_REPORTE = 6) THEN
+
+        BEGIN
+            OPEN CV_1 FOR
+                SELECT DETALLE_GLOSA3i.NU_NUME_FACU_DEGL NU_NUME_FACU_DEGL,
+                    RESPUESTA_GLOSA3i.NU_AUTO_GLOS NU_AUTO_GLOS,
+                    RESPUESTA_GLOSA3i.FECH_RECEP_REGL FECH_RECEP_REGL,
+                    RESPUESTA_GLOSA3i.FECH_REGIS_REGL FECH_REGIS_REGL,
+                    ITEM_RESPUESTA_GLOSA3i.CONF_RES_RIGL CONF_RES_RIGL,
+                    ITEM_RESPUESTA_GLOSA3i.TX_OBS_RIGL TX_OBS_RIGL,
+                    ITEM_RESPUESTA_GLOSA3i.TIP_RES_RIGL TIP_RES_RIGL,
+                    CASE ITEM_RESPUESTA_GLOSA3i.TIP_RES_RIGL 
+                        WHEN 0 THEN 'Total'
+                        WHEN 1 THEN 'Parcial'
+                    END AUXTIPO,
+                    ITEM_RESPUESTA_GLOSA3i.VAL_ACEP_RIGL VAL_ACEP_RIGL,
+                    RESPUESTA_GLOSA3I.CERRADO CERRADO,
+                    CASE RESPUESTA_GLOSA3I.CERRADO
+                        WHEN 0 THEN 'No'
+                        WHEN 1 THEN 'Si'
+                    END AUXCERRADO
+                FROM ((RESPUESTA_GLOSA3i RESPUESTA_GLOSA3i
+                INNER JOIN GLOSA3i GLOSA3i
+                    ON (RESPUESTA_GLOSA3i.NU_AUTO_GLOS = GLOSA3i.NU_AUTO_GLOS))
+                INNER JOIN ITEM_RESPUESTA_GLOSA3i ITEM_RESPUESTA_GLOSA3i
+                    ON (ITEM_RESPUESTA_GLOSA3i.NU_AUTO_REGL = RESPUESTA_GLOSA3i.NU_AUTO_REGL))
+                INNER JOIN DETALLE_GLOSA3i DETALLE_GLOSA3i
+                    ON (DETALLE_GLOSA3i.NU_AUTO_GLOS_DEGL = GLOSA3i.NU_AUTO_GLOS)
+                WHERE DETALLE_GLOSA3i.NU_NUME_FACU_DEGL = V_NUM_FACTURA;
+        END;
+
+    END IF;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;	
+

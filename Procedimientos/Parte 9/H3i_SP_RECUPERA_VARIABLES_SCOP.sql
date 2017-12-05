@@ -1,0 +1,29 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_RECUPERA_VARIABLES_SCOP
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+    V_TIPO IN NUMBER,
+    CV_1 OUT SYS_REFCURSOR
+)
+AS
+
+BEGIN
+  OPEN CV_1 FOR 
+     SELECT NU_NUME_SV
+        TX_NOMB_SV,
+        NU_TIPO_SV,
+        NU_NUME_SO,
+        TX_NOMB_SO,
+        NU_PUNT_SO
+    FROM SCOP_VARIABLE
+    INNER JOIN SCOP_OPCION ON NU_NUME_SV = NU_NUME_SV_SO
+    WHERE NU_TIPO_SV = V_TIPO
+    AND SCOP_OPCION.ESTADO= 1;
+
+
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

@@ -1,0 +1,18 @@
+CREATE OR REPLACE PROCEDURE H3i_ICEBERGARTICULOS_BOR
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+	V_CD_CODI_ARTI IN VARCHAR2
+)
+AS
+BEGIN
+	
+	DELETE FROM ICEBERG_ARTICULOS 
+	WHERE CD_CODI_ARTI = V_CD_CODI_ARTI;
+
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

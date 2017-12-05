@@ -1,0 +1,23 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_CONS_HABITACION
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  	v_CodPabellon IN VARCHAR2 DEFAULT NULL ,
+  	cv_1 OUT SYS_REFCURSOR
+)
+AS
+
+BEGIN
+
+   	OPEN  cv_1 FOR
+		SELECT CD_CODI_HABI ,
+			DE_DESC_HABI ,
+			CD_CODI_PABE_HABI 
+		FROM HABITACIONES 
+		WHERE  CD_CODI_PABE_HABI = NVL(v_CodPabellon, CD_CODI_PABE_HABI) ;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

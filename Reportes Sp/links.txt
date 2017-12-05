@@ -1,0 +1,10 @@
+http://devtroce.com/2013/05/28/pasar-filas-a-columnas-con-pivot-en-sql-server/
+https://docs.microsoft.com/en-us/sql/integration-services/import-export-data/choose-a-data-source-sql-server-import-and-export-wizard
+https://stackoverflow.com/questions/8040105/execute-sp-executesql-for-select-into-table-but-cant-select-out-temp-table-d
+https://technet.microsoft.com/en-us/library/aa175921(v=sql.80).aspx
+http://www.forosdelweb.com/f87/eliminar-tabla-temporal-si-que-existe-485068/
+http://www.forosdelweb.com/f87/crear-tabla-con-nombre-dinamico-1017107/
+http://programacion.net/articulo/tablas_temporales_en_el_sql_server_281
+https://stackoverflow.com/questions/4130462/return-value-from-execsql
+https://eurecadigital.wordpress.com/2009/07/29/devolver-una-tabla-en-una-funcion-de-usuario-udf-de-sql-server/
+https://docs.microsoft.com/en-us/sql/t-sql/functions/datename-transact-sql

@@ -1,0 +1,76 @@
+CREATE TABLE SPTYT.MOVI_CARGOS
+(
+  NU_NUME_MOVI              NUMBER(10)          DEFAULT (0)                   NOT NULL,
+  NU_TIPO_MOVI              NUMBER(10)          DEFAULT (0),
+  VL_UNID_MOVI              FLOAT(126)          DEFAULT (0),
+  VL_COPA_MOVI              FLOAT(126)          DEFAULT (0),
+  NU_ESTA_MOVI              NUMBER(3)           DEFAULT (1),
+  NU_HIST_PAC_MOVI          VARCHAR2(20 CHAR)   NOT NULL,
+  NU_NUME_FAC_MOVI          NUMBER(10),
+  FE_FECH_MOVI              DATE,
+  NU_NUME_REG_MOVI          NUMBER(10),
+  NU_NUME_CONV_MOVI         NUMBER(10)          DEFAULT (0),
+  NU_NUME_FACO_MOVI         NUMBER(10),
+  NU_FACT_TEMP_MOVI         NUMBER(10),
+  NU_TIAT_MOVI              NUMBER(3)           DEFAULT (0),
+  CD_CODI_CECO_MOVI         VARCHAR2(11 CHAR),
+  NU_ORDE_MOVI              VARCHAR2(15 CHAR),
+  NU_NUME_PAQU_MOVI         NUMBER(10),
+  NU_NUME_ORDE_MOVI         NUMBER(10),
+  CD_CODI_MED_MOVI          VARCHAR2(10 CHAR),
+  CD_MEDI_ORDE_MOVI         VARCHAR2(10 CHAR),
+  DE_BONO_MOVI              VARCHAR2(12 CHAR),
+  NU_NUME_ROTU_MOVI         NUMBER(10)          DEFAULT (0),
+  NU_NUME_CONE_MOVI         NUMBER(10),
+  NU_POSI_FACT_MOVI         NUMBER(10),
+  NU_TIPO_COPA_MOVI         NUMBER(3),
+  CD_CODI_LUAT_MOVI         VARCHAR2(2 CHAR),
+  CD_CORRECFFDS_MOV         VARCHAR2(50),
+  ID_MARCAPASA_MOV          VARCHAR2(5)        DEFAULT u'S',
+  NU_TFACO_SER_PAQU_MOVI    NUMBER(10),
+  ID_PRECU_MOVI             NUMBER(18),
+  ES_GESTANTE               NUMBER(3),
+  CD_REGIMEN_MOVI           VARCHAR2(2 CHAR)    DEFAULT 'P'                   NOT NULL,
+  NU_FAC_ANUL               NUMBER(10),
+  NU_BLHIS_MOVI             NUMBER(10)          DEFAULT (0),
+  TX_PREFIJO_SEDE_FAC_MOVI  VARCHAR2(50),
+  NU_NUME_SEDE_FAC_MOVI     NUMBER(18),
+  VL_IMAD_MOVI              FLOAT(126),
+  VL_IMPA_MOVI              FLOAT(126),
+  CD_CODI_CECO_INV          VARCHAR2(11 CHAR),
+  NU_ADSCR_LIQUI            NUMBER(1)           DEFAULT (0)
+)
+TABLESPACE USERS
+PCTUSED    0
+PCTFREE    10
+INITRANS   1
+MAXTRANS   255
+STORAGE    (
+            INITIAL          64K
+            NEXT             1M
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+           )
+LOGGING 
+NOCOMPRESS 
+NOCACHE
+MONITORING;
+
+
+CREATE UNIQUE INDEX SPTYT.PKMOVI_CARGOS ON SPTYT.MOVI_CARGOS
+(NU_NUME_MOVI)
+LOGGING
+TABLESPACE USERS
+PCTFREE    10
+INITRANS   2
+MAXTRANS   255
+STORAGE    (
+            INITIAL          64K
+            NEXT             1M
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+           );

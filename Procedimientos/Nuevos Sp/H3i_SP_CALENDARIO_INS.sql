@@ -1,0 +1,49 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_CALENDARIO_INS
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+	V_FECHA DATE DEFAULT NULL,
+	V_TIPO NUMBER DEFAULT NULL
+)	
+AS
+	V_COUNT NUMBER;
+BEGIN
+	--
+	SELECT COUNT(FE_FECH_CIT) 
+	INTO V_COUNT
+	FROM CITAS_MEDICAS 
+	WHERE FE_FECH_CIT
+		BETWEEN 
+			(((V_FECHA + (-TO_CHAR(V_FECHA, 'HH')) / 24) + (-TO_CHAR(V_FECHA , 'MI')) / 1440) - 12 / 24)
+		AND
+			(((V_FECHA + (-TO_CHAR(V_FECHA,'HH')) / 24) + 23 / 24) - 12 / 24);
+
+	--
+	IF(V_COUNT = 0) THEN 
+		BEGIN
+			--
+			INSERT INTO CALENDARIO (FE_FECH_CALE, NU_TIPO_CALE) 
+			VALUES (V_FECHA, V_TIPO);
+			--
+			SELECT COUNT(FE_FECH_TUME) 
+			INTO V_COUNT
+			FROM TURNOS_MEDICOS 
+			WHERE FE_FECH_TUME  
+				BETWEEN 
+					(((V_FECHA + (-TO_CHAR(V_FECHA, 'HH')) / 24) + (-TO_CHAR(V_FECHA , 'MI')) / 1440) - 12 / 24)
+				AND
+					(((V_FECHA + (-TO_CHAR(V_FECHA,'HH')) / 24) + 23 / 24) - 12 / 24);
+			--
+			IF(V_COUNT > 0) THEN
+				BEGIN
+					RAISE_APPLICATION_ERROR(-20001,'HAY_TURNOS');
+				END;
+			END IF;
+		END;
+	ELSE
+		BEGIN
+			RAISE_APPLICATION_ERROR(-20001,'HAY_CITAS');
+		END;
+	END IF;
+END;

@@ -1,0 +1,25 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_CIERREFACCONT_XCOD
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  	v_CODIGO IN NUMBER
+)
+AS
+
+BEGIN
+
+   	UPDATE MOVI_CARGOS
+    SET NU_ESTA_MOVI = 1
+    WHERE  NU_NUME_FACO_MOVI = v_CODIGO;
+    
+
+   	UPDATE FACTURAS_CONTADO
+    SET NU_ESTA_FACO = '2'
+    WHERE  NU_NUME_FACO = v_CODIGO ;-- NU_ESTA_FACO = '1'
+   
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

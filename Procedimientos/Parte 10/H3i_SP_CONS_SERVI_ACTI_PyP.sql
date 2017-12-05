@@ -1,0 +1,26 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_CONS_SERVI_ACTI_PyP
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+
+(
+  v_CD_ACTIVIDAD_PYP IN VARCHAR2,
+  cv_1 OUT SYS_REFCURSOR
+)
+AS
+
+BEGIN
+
+   OPEN  cv_1 FOR
+      SELECT CD_CODI_SER ,
+             NO_NOMB_SER ,
+             CD_CODI_PLANTILLA 
+        FROM SERVICIOS S
+               INNER JOIN R_SER_ACTI RAS   ON S.CD_CODI_SER = RAS.CD_CODI_SER_RSA
+               INNER JOIN ACTIVIDAD_PYP APYP   ON RAS.CD_CODI_ACTI_RSA = APYP.CD_CODI_ACTI
+       WHERE  APYP.CD_CODI_ACTI = v_CD_ACTIVIDAD_PYP ;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

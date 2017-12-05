@@ -1,0 +1,42 @@
+CREATE TABLE SPTYT.NOPOS_DX
+(
+  NU_AUTO_NOP_NDX   NUMBER(10)                  NOT NULL,
+  NU_TIPO_NDX       NUMBER(1)                   DEFAULT (0)                   NOT NULL,
+  CD_CODI_DIAG_NDX  VARCHAR2(5)                NOT NULL,
+  TX_TIPD_NDX       VARCHAR2(500 CHAR),
+  NU_ORDEN_NDX      NUMBER(10)
+)
+TABLESPACE USERS
+PCTUSED    0
+PCTFREE    10
+INITRANS   1
+MAXTRANS   255
+STORAGE    (
+            INITIAL          64K
+            NEXT             1M
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+           )
+LOGGING 
+NOCOMPRESS 
+NOCACHE
+MONITORING;
+
+
+CREATE UNIQUE INDEX SPTYT.PK_NOPOS_DX ON SPTYT.NOPOS_DX
+(NU_AUTO_NOP_NDX, NU_TIPO_NDX, CD_CODI_DIAG_NDX)
+LOGGING
+TABLESPACE USERS
+PCTFREE    10
+INITRANS   2
+MAXTRANS   255
+STORAGE    (
+            INITIAL          64K
+            NEXT             1M
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+           );

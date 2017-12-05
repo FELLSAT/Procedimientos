@@ -1,0 +1,24 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_OBTENER_INDICADOR
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  cv_1 OUT SYS_REFCURSOR
+)
+AS
+
+BEGIN
+
+	OPEN  cv_1 FOR
+		SELECT CD_CODI_INDI ,
+			NU_AUTO_INDI ,
+			TX_NOMBRE_INDI ,
+			NU_ESTADO_INDI ,
+			NU_MODULO_INDI ,
+			TX_FORMU_INDI 
+		FROM INDICADOR  ;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

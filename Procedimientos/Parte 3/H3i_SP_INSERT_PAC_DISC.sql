@@ -1,0 +1,20 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_INSERT_PAC_DISC
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_NU_HIST_PAC IN VARCHAR2,
+  v_NU_AUTO_DISC IN NUMBER
+)
+AS
+
+BEGIN
+
+   INSERT INTO R_PAC_DIS
+     ( NU_HIST_PAC_RPD, NU_AUTO_DISC_RPD )
+     VALUES ( v_NU_HIST_PAC, v_NU_AUTO_DISC );
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END H3i_SP_INSERT_PAC_DISC;

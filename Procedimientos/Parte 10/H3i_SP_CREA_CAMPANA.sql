@@ -1,0 +1,29 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_CREA_CAMPANA
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_NO_NOMBRE IN VARCHAR2,
+  v_FECHA_INI IN DATE,
+  v_FECHA_FIN IN DATE,
+  v_DE_LUGAR IN VARCHAR2
+)
+AS
+   v_CD_CODI_CAMP NUMBER(10,0) := 0;
+
+BEGIN
+
+   SELECT NVL(( SELECT COUNT(*)  
+                FROM CAMPANA  ), 0) + 1
+
+     INTO v_CD_CODI_CAMP
+     FROM DUAL ;
+     
+   INSERT INTO CAMPANA
+     ( CD_CODI_CAMP, NO_NOMB_CAMP, FE_INI_CAMP, FE_FIN_CAMP, DE_LUGAR_CAMP )
+     VALUES ( TO_CHAR(v_CD_CODI_CAMP), v_NO_NOMBRE, TO_DATE(v_FECHA_INI,'dd/mm/yyyy'), TO_DATE(v_FECHA_FIN,'dd/mm/yyyy'), v_DE_LUGAR );
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

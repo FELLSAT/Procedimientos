@@ -1,0 +1,93 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_VALCRUCEHORA_PERS
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_IDGRUPO IN NUMBER,
+  v_CODPERSONA IN VARCHAR2,
+  v_TipoPersona IN NUMBER,
+  v_IDHORARIO IN NUMBER
+)
+AS
+   v_temp NUMBER(1, 0) := 0;
+
+BEGIN
+
+   DELETE FROM tt_TMPDestino_2;
+   UTILS.IDENTITY_RESET('tt_TMPDestino_2');
+   
+   INSERT INTO tt_TMPDestino_2 ( 
+   	SELECT NU_AUTO_HOGR ,
+           NU_DIA_HOGR ,
+           FE_HORAINICIAL_HOGR ,
+           FE_HORAFINAL_HOGR ,
+           FE_INICIO_PEAC ,
+           FE_FINAL_PEAC 
+   	  FROM HORARIO_GRUPO 
+             JOIN GRUPO_ASIGNATURA_PERIODO G   ON NU_AUTO_GRAP_HOGR = G.NU_AUTO_GRAP
+             JOIN PERIODO_ACADEMICO    ON NU_AUTO_PEAC_GRAP = NU_AUTO_PEAC
+   	 WHERE  NU_AUTO_HOGR = v_IDHORARIO );
+   DELETE FROM tt_TMPRegistrado_2;
+   UTILS.IDENTITY_RESET('tt_TMPRegistrado_2');
+   
+   INSERT INTO tt_TMPRegistrado_2 ( 
+   	SELECT A.TX_CODIGO_ASIG ,
+           A.TX_NOMBRE_ASIG ,
+           NU_AUTO_GRAP ,
+           NU_CODIGO_GRAP ,
+           NU_AUTO_HOGR ,
+           NU_DIA_HOGR ,
+           FE_HORAINICIAL_HOGR ,
+           FE_HORAFINAL_HOGR ,
+           RG.CODPERSONA ,
+           G.NU_AUTO_PEAC_GRAP ,
+           FE_INICIO_PEAC ,
+           FE_FINAL_PEAC 
+   	  FROM TABLE(FN_TablaPersona_Academico(v_TIPOPERSONA)) RG
+             JOIN HORARIO_GRUPO H   ON RG.IDGrupo = H.NU_AUTO_HOGR
+             JOIN GRUPO_ASIGNATURA_PERIODO G   ON G.NU_AUTO_GRAP = H.NU_AUTO_GRAP_HOGR
+             JOIN PERIODO_ACADEMICO PA   ON PA.NU_AUTO_PEAC = G.NU_AUTO_PEAC_GRAP
+             JOIN ASIGNATURA A   ON A.TX_CODIGO_ASIG = G.TX_CODIGO_ASIG_GRAP
+   	 WHERE  rg.CodPersona = v_CODPERSONA
+              AND NU_AUTO_HOGR <> v_IDHORARIO
+              AND NU_ESTADO_PEAC = 1 );
+   DELETE FROM tt_TMPCRUCE_2;
+   UTILS.IDENTITY_RESET('tt_TMPCRUCE_2');
+   
+   INSERT INTO tt_TMPCRUCE_2 ( 
+   	SELECT TR.* 
+   	  FROM tt_TMPDestino_2 TD
+             JOIN tt_TMPRegistrado_2 TR   ON TD.NU_DIA_HOGR = TR.NU_DIA_HOGR
+   	 WHERE  ( ( utils.dateadd('SECOND', 1, TD.FE_HORAINICIAL_HOGR) BETWEEN TR.FE_HORAINICIAL_HOGR AND TR.FE_HORAFINAL_HOGR )
+              AND ( ( TD.FE_INICIO_PEAC BETWEEN TR.FE_INICIO_PEAC AND TR.FE_FINAL_PEAC )
+              OR ( TD.FE_FINAL_PEAC BETWEEN TR.FE_INICIO_PEAC AND TR.FE_FINAL_PEAC ) ) )
+              OR ( ( utils.dateadd('SECOND', -1, TD.FE_HORAFINAL_HOGR) BETWEEN TR.FE_HORAINICIAL_HOGR AND TR.FE_HORAFINAL_HOGR )
+              AND ( ( TD.FE_INICIO_PEAC BETWEEN TR.FE_INICIO_PEAC AND TR.FE_FINAL_PEAC )
+              OR ( TD.FE_FINAL_PEAC BETWEEN TR.FE_INICIO_PEAC AND TR.FE_FINAL_PEAC ) ) ) AND ROWNUM <= 1 );
+   --(TD.FE_HORAINICIAL_HOGR BETWEEN TR.FE_HORAINICIAL_HOGR  AND TR.FE_HORAFINAL_HOGR)
+   --OR		(TD.FE_HORAFINAL_HOGR BETWEEN TR.FE_HORAINICIAL_HOGR  AND TR.FE_HORAFINAL_HOGR)
+   BEGIN
+      SELECT 1 INTO v_temp
+        FROM DUAL
+       WHERE EXISTS ( SELECT * 
+                      FROM tt_TMPCRUCE_2  );
+   EXCEPTION
+      WHEN OTHERS THEN
+         NULL;
+   END;
+      
+   IF v_temp = 1 THEN
+    
+   BEGIN
+      utils.raiserror( 0, 'No se puede realizar el proceso de guardado toda vez que se podria presentar cruce de horario' );
+   
+   END;
+   END IF;
+   EXECUTE IMMEDIATE ' TRUNCATE TABLE tt_TMPDestino_2 ';
+   EXECUTE IMMEDIATE ' TRUNCATE TABLE tt_TMPRegistrado_2 ';
+   EXECUTE IMMEDIATE ' TRUNCATE TABLE tt_TMPCRUCE_2 ';
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

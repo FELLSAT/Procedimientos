@@ -1,0 +1,43 @@
+CREATE TABLE SPTYT.R_ART_SER
+(
+  CD_CODI_ARTI_RAS  VARCHAR2(30 CHAR)           NOT NULL,
+  CD_CODI_SER_RAS   VARCHAR2(30 CHAR)           NOT NULL,
+  CD_CODI_MED_RAS   VARCHAR2(30 CHAR)           NOT NULL,
+  NU_CANTIDAD_RAS   NUMBER(10)                  DEFAULT (0)                   NOT NULL,
+  TX_OB_R_ART_SER   VARCHAR2(4000)
+)
+TABLESPACE USERS
+PCTUSED    0
+PCTFREE    10
+INITRANS   1
+MAXTRANS   255
+STORAGE    (
+            INITIAL          64K
+            NEXT             1M
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+           )
+LOGGING 
+NOCOMPRESS 
+NOCACHE
+MONITORING;
+
+
+
+CREATE UNIQUE INDEX SPTYT.PK_R_ART_SER ON SPTYT.R_ART_SER
+(CD_CODI_ARTI_RAS, CD_CODI_SER_RAS, CD_CODI_MED_RAS)
+LOGGING
+TABLESPACE USERS
+PCTFREE    10
+INITRANS   2
+MAXTRANS   255
+STORAGE    (
+            INITIAL          64K
+            NEXT             1M
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+           );

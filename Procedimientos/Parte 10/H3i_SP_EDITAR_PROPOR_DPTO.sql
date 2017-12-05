@@ -1,0 +1,26 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_EDITAR_PROPOR_DPTO
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_DEPARTAMENTO IN VARCHAR2,
+  v_PAIS IN VARCHAR2,
+  v_TF IN FLOAT,
+  v_PD IN FLOAT,
+  v_PAP IN FLOAT
+)
+AS
+
+BEGIN
+
+   UPDATE DEPARTAMENTOS
+      SET NU_NUME_TF_DPTO = v_TF,
+          NU_NUME_PD_DPTO = v_PD,
+          NU_NUME_PAP_DPTO = v_PAP
+    WHERE  CD_CODI_DPTO = v_DEPARTAMENTO
+     AND CD_CODI_PAIS_DPTO = v_PAIS;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

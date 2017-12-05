@@ -1,0 +1,23 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_RECUPERAR_ESP_xCOD
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+	v_NU_AUTO_ESP IN NUMBER,
+	cv_1 OUT SYS_REFCURSOR
+)
+AS
+
+BEGIN
+
+   	OPEN  cv_1 FOR
+		SELECT NU_AUTO_ESP ,
+			IDENTIFICADOR 
+		FROM ESPACIO_LAB 
+		WHERE  NU_AUTO_ESP = v_NU_AUTO_ESP
+		ORDER BY NU_AUTO_ESP ASC ;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

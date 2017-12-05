@@ -1,0 +1,24 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_OBTENER_PUNTOS_UBICA_FA --PROCEDIMIENTO ENCARGADO DE OBTENER LOS PUNTOS DE LA UBICACION FAMILIAR
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_NU_UBIC_FAM IN NUMBER,
+  cv_1 OUT SYS_REFCURSOR
+)
+AS
+
+BEGIN
+
+   OPEN  cv_1 FOR
+      SELECT NU_UBICA_PUNTO ,
+             NU_UBIC_FAM ,
+             POS_X ,
+             POS_Y 
+        FROM HIST_GENO_UBICA_PUNTOS 
+       WHERE  NU_UBIC_FAM = v_NU_UBIC_FAM ;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

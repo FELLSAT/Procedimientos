@@ -1,0 +1,22 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_GUARDA_MED_CIR
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_CD_CODI_CIR IN NUMBER,
+  v_CD_CODI_MEDI IN VARCHAR2,
+  v_TIPO_PROF IN NUMBER
+)
+AS
+
+BEGIN
+
+   	INSERT INTO MED_CIR( 
+   		CD_CODI_CIR, CD_CODI_MEDI, TIPO_PROF )
+    VALUES ( 
+    	v_CD_CODI_CIR, v_CD_CODI_MEDI, v_TIPO_PROF );
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

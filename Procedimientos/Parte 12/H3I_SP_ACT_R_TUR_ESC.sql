@@ -1,0 +1,22 @@
+CREATE OR REPLACE PROCEDURE H3I_SP_ACT_R_TUR_ESC
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_NU_NUME_TUME_RTE IN NUMBER,
+  v_CD_CODI_MED_RTE IN VARCHAR2,
+  v_CD_CODI_CONS_RTE IN VARCHAR2
+)
+AS
+
+BEGIN
+
+   	INSERT INTO R_TUR_ESC( 
+   		NU_NUME_TUME_RTE, CD_CODI_MED_RTE, CD_CODI_CONS_RTE )
+    VALUES ( 
+    	v_NU_NUME_TUME_RTE, v_CD_CODI_MED_RTE, v_CD_CODI_CONS_RTE );
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

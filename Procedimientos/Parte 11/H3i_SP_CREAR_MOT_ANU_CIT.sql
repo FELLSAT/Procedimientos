@@ -1,0 +1,20 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_CREAR_MOT_ANU_CIT
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_NOMBRE IN VARCHAR2,
+  v_ESTADO IN NUMBER
+)
+AS
+
+BEGIN
+
+   INSERT INTO MOTIVOS_ANULACION_CITA
+     ( TX_NOMBRE_MOANCI, NU_ESTADO_MOANCI )
+     VALUES ( v_NOMBRE, v_ESTADO );
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

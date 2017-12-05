@@ -1,0 +1,19 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_CERRAR_EVENT_SINIEST
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_ID_REG_EVENTO_SIN IN NUMBER
+)
+AS
+
+BEGIN
+
+   	UPDATE REGISTRO_EVENTO_SINIESTRO
+   	SET ESTA_ABIERTO = 0
+    WHERE  ID_REG_EVENTO_SIN = v_ID_REG_EVENTO_SIN;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

@@ -1,0 +1,21 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_REG_REL_ADSCR_SERV
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+	v_CD_REG_ADSC IN NUMBER,
+	v_CD_SERV_READ IN VARCHAR2
+)
+AS
+
+BEGIN
+
+	INSERT INTO R_REGIS_ADSCR_SERV( 
+		CD_REG_ADSC, CD_SERV_READ )
+	VALUES ( 
+		v_CD_REG_ADSC, v_CD_SERV_READ );
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

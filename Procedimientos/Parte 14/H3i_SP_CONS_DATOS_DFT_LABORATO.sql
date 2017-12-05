@@ -1,0 +1,39 @@
+CREATE OR REPLACE PROCEDURE 3i_SP_CONS_DATOS_DFT_LABORATO
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+    V_NU_NUME_MOVI_LABO IN NUMBER,
+    CV_1 OUT SYS_REFCURSOR
+)
+ 
+AS
+    CONTADOR NUMBER;
+BEGIN
+    
+    INSERT INTO #tmp --- TABLA TEMPORAL DE SQL SERVER (CAMBIAR)
+        SELECT 
+            NVL(TX_CODI_RPP_LABO,'NA') AS TX_CODI_RPP_LABO, 
+            NVL(ID_ACTO_QUIR_LABO,'N') AS ID_ACTO_QUIR_LABO    
+        FROM LABORATORIO )
+        WHERE NU_NUME_MOVI_LABO = V_NU_NUME_MOVI_LABO;
+        
+    SELECT COUNT(*)
+    INTO CONTADOR
+    FROM #tmp; -- TABLA TEMPORAL DE SQL SERVER (CAMBIAR)
+
+    IF CONTADOR <= 0 THEN
+        BEGIN
+            INSERT INTO #tmp
+              SELECT 'NA', 'N';
+        END;
+    END;
+    
+    OPEN CV_1 FOR
+        SELECT * FROM #tmp; -- TABLA TEMPORAL DE SQL SERVER (CAMBIAR)
+
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

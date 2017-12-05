@@ -1,0 +1,23 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_CONSULTA_ESP_PROC
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_CODIGOPROCED IN NVARCHAR2,
+  cv_1 OUT SYS_REFCURSOR
+)
+AS
+
+BEGIN
+
+   OPEN  cv_1 FOR
+      SELECT E.CD_CODI_ESP ,
+             E.NO_NOMB_ESP 
+        FROM R_ESP_SER R
+               JOIN ESPECIALIDADES E   ON ( R.CD_CODI_ESP_RES = E.CD_CODI_ESP )
+       WHERE  R.CD_CODI_SER_RES = v_CODIGOPROCED ;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END H3i_SP_CONSULTA_ESP_PROC;

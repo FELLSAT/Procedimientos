@@ -1,0 +1,100 @@
+CREATE TABLE SPTYT.CONVENIOS
+(
+  NU_NUME_CONV           NUMBER(10)             NOT NULL,
+  CD_CODI_CONV           VARCHAR2(20 CHAR),
+  CD_NIT_EPS_CONV        VARCHAR2(11 CHAR),
+  VL_CUPO_CONV           FLOAT(126)             DEFAULT (0),
+  VL_SALD_CONV           FLOAT(126)             DEFAULT (0),
+  NU_COBR_CONV           NUMBER(3)              DEFAULT (0),
+  NU_FORM_CONV           NUMBER(3)              DEFAULT (0),
+  PR_COBR_CONV           FLOAT(126)             DEFAULT (0),
+  CD_CODI_TARB_CONV      VARCHAR2(2 CHAR),
+  FE_INIC_CONV           DATE,
+  FE_FINA_CONV           DATE,
+  VL_CUIN_CONV           FLOAT(126)             DEFAULT (0),
+  CD_CODI_PLAN_CONV      VARCHAR2(2 CHAR),
+  NU_VIGE_CONV           NUMBER(3)              DEFAULT (0),
+  NU_CAPI_CONV           NUMBER(3)              DEFAULT (0),
+  CD_CXC_CUEN_CONV       VARCHAR2(50 CHAR),
+  CD_COPA_CUEN_CONV      VARCHAR2(50 CHAR),
+  PR_LABO_CONV           FLOAT(126),
+  CD_CODI_TARI_CONV      VARCHAR2(2 CHAR),
+  NU_ALTE_CONV           NUMBER(3),
+  PR_LABHOS_CONV         FLOAT(126),
+  CT_LABPAQ_CONV         NUMBER(10),
+  CT_ELEPAQ_CONV         NUMBER(10),
+  NU_FOPA_CONV           NUMBER(3),
+  CD_RECA_CUEN_CONV      VARCHAR2(14 CHAR),
+  CD_SUBS_CUEN_CONV      VARCHAR2(14 CHAR),
+  CD_DESC_CUEN_CONV      VARCHAR2(14 CHAR),
+  CD_GANA_CUEN_CONV      VARCHAR2(14 CHAR),
+  CD_PERD_CUEN_CONV      VARCHAR2(14 CHAR),
+  NU_COBR_ELE_CONV       NUMBER(3),
+  NU_FORM_ELE_CONV       NUMBER(3),
+  PR_COBR_ELE_CONV       FLOAT(126),
+  NU_COPRICONS_CONV      NUMBER(3),
+  NU_REG_CONV            NUMBER(3),
+  NU_INDPYP_CONV         NUMBER(3),
+  CD_CXCP_CUEN_CONV      VARCHAR2(14 CHAR),
+  ID_CODI_TIUS_CONV      VARCHAR2(2 CHAR),
+  CD_ANTI_CUEN_CONV      VARCHAR2(14 CHAR),
+  VL_MULT_CONV           FLOAT(126),
+  NU_COGN_CONV           NUMBER(3),
+  NU_SOAT_CONV           NUMBER(3),
+  NU_TIEM_VENC_CONV      NUMBER(10),
+  NU_RC_CONV             NUMBER(3),
+  NU_PORC_COPA           NUMBER(10)             DEFAULT (100),
+  CD_NOMB_CONV           VARCHAR2(50)          DEFAULT (' '),
+  NU_ABS_CONV            NUMBER(3),
+  NU_FORMLST_CONV        NUMBER(1)              DEFAULT (0),
+  NU_AUTO_MEDPOS_CONV    NUMBER(10),
+  NU_AUTO_MEDNOPOS_CONV  NUMBER(10),
+  NU_PORADS_CONV         VARCHAR2(10),
+  CD_PORADS_CONV         VARCHAR2(1 CHAR),
+  VL_MULTESP_CONV        NUMBER(18)             DEFAULT (0),
+  CD_MULT_CUEN_CONV      VARCHAR2(14 CHAR),
+  NU_NOPOS_CONV          NUMBER(10),
+  FE_FEAI_CONV           DATE,
+  FE_FEAF_CONV           DATE,
+  NU_PEGC_CONV           NUMBER(10),
+  ES_RESE_CONV           NUMBER(1)              DEFAULT (0),
+  ES_REEL_CONV           NUMBER(1)              DEFAULT (0),
+  CD_RESE_CONV           NUMBER(10)             DEFAULT (0),
+  CD_REEL_CONV           NUMBER(10)             DEFAULT (0),
+  CD_REOPSE_CONV         NUMBER(10)             DEFAULT (0),
+  CD_REOPEL_CONV         NUMBER(10)             DEFAULT (0)
+)
+TABLESPACE USERS
+PCTUSED    0
+PCTFREE    10
+INITRANS   1
+MAXTRANS   255
+STORAGE    (
+            INITIAL          64K
+            NEXT             1M
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+           )
+LOGGING 
+NOCOMPRESS 
+NOCACHE
+MONITORING;
+
+
+CREATE UNIQUE INDEX SPTYT.PKCONVENIOS ON SPTYT.CONVENIOS
+(NU_NUME_CONV)
+LOGGING
+TABLESPACE USERS
+PCTFREE    10
+INITRANS   2
+MAXTRANS   255
+STORAGE    (
+            INITIAL          64K
+            NEXT             1M
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+           );

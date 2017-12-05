@@ -1,0 +1,31 @@
+CREATE OR REPLACE PROCEDURE QyR3i_SP_CRE_COMUNICADO
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+    v_FECHA_REGISTRO IN DATE,
+    v_CONEXION IN NUMBER,
+    v_ASUNTO IN VARCHAR2,
+    v_CONTENIDO IN VARCHAR2,
+    v_DESTINATARIOS IN VARCHAR2,
+    v_ESTADO IN NUMBER,
+    v_ID_SOLICITUD IN NUMBER
+)
+AS
+
+BEGIN
+
+    INSERT INTO QYR_COMUNICADO( 
+        FE_FECH_INI_COM, NU_REM_COM, 
+        TX_ASUN_COM, TX_CONT_COM, 
+        TX_DEST_COM, NU_NUME_EST_COM, 
+        NU_NUME_SQR_COM )
+    VALUES ( v_FECHA_REGISTRO, v_CONEXION, 
+        v_ASUNTO, v_CONTENIDO, 
+        v_DESTINATARIOS, v_ESTADO, 
+        v_ID_SOLICITUD );
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

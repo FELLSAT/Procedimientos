@@ -1,0 +1,19 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_DELETE_SEGUI_EVENTO
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_ID_SEGUIMIENTO IN NUMBER
+)
+AS
+
+BEGIN
+
+   	UPDATE SEGUIMIENTO_EVENTO
+    SET ELIMINADO = 1
+    WHERE  ID_SEGUIMIENTO = v_ID_SEGUIMIENTO;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

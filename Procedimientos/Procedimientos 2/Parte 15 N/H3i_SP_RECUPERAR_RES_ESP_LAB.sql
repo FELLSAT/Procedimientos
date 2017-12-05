@@ -1,0 +1,34 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_RECUPERAR_RES_ESP_LAB
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+    v_CD_AUTO_LAB IN NUMBER,
+    v_FECHA_INI IN DATE,
+    v_FECHA_FIN IN DATE,
+    cv_1 OUT SYS_REFCURSOR
+)
+AS
+
+BEGIN
+
+    OPEN  cv_1 FOR
+        SELECT NU_AUTO_RELAB ,
+            HORA_INICIO_RLAB ,
+            HORA_FINAL_RLAB ,
+            ES_GRUPAL_RLAB ,
+            NU_AUTO_ESP_RLAB ,
+            CD_CODI_MED_RES_RLAB 
+        FROM RESERVA_LAB 
+        INNER JOIN ESPACIO_LAB    
+            ON NU_AUTO_ESP = NU_AUTO_ESP_RLAB
+        INNER JOIN LABORATORIO_LAB    
+            ON CD_AUTO_LAB = CD_AUTO_LAB_ESP
+        WHERE  CD_AUTO_LAB = v_CD_AUTO_LAB
+            AND ( HORA_INICIO_RLAB BETWEEN v_FECHA_INI AND v_FECHA_FIN )
+            AND ( HORA_FINAL_RLAB BETWEEN v_FECHA_INI AND v_FECHA_FIN ) ;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

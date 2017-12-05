@@ -1,0 +1,28 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_CONSULTA_ITEMGRUPETAR
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_TX_CODI_GPET_ITGE IN VARCHAR2,
+  cv_1 OUT SYS_REFCURSOR
+)
+AS
+
+BEGIN
+
+   OPEN  cv_1 FOR
+      SELECT TX_CODI_GPET_ITGE ,
+             NU_AUTO_ITGE ,
+             TX_NOMB_ITGE ,
+             NU_EDADIN_ITGE ,
+             NU_EDADFI_ITGE ,
+             NU_SEXO_ITGE ,
+             NU_UNMED_ITGE 
+        FROM ITEM_GRUPOETAREO 
+       WHERE  TX_CODI_GPET_ITGE = v_TX_CODI_GPET_ITGE ;
+   DBMS_OUTPUT.PUT_LINE('SE HA CREADO EL PROCEDIMIENTO ALMACENADO H3i_SP_CONSULTA_ITEMGRUPETAR');
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

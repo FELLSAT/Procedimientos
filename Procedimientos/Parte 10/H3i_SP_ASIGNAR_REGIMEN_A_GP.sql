@@ -1,0 +1,21 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_ASIGNAR_REGIMEN_A_GP
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_COD_GRUPO_POBLA IN VARCHAR2,
+  v_COD_REGIMEN IN VARCHAR2
+)
+AS
+
+BEGIN
+
+   INSERT INTO R_GP_TIUS
+     ( CD_CODI_GP_RGPT, ID_CODI_TIUS_RGPT )
+     VALUES ( v_COD_GRUPO_POBLA, v_COD_REGIMEN );
+
+     
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

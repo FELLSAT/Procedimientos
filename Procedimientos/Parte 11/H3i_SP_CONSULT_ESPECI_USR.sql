@@ -1,0 +1,27 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_CONSULT_ESPECI_USR /*PROCEDIMIENTO ALMACENADO QUE PERMITE RECUPERAR LAS ASIGNACIONES DE ESPECIALIDADES DE UN USUARIO*/
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_ID_IDEN_USUA IN VARCHAR2,
+  cv_1 OUT SYS_REFCURSOR
+)
+AS
+
+BEGIN
+
+   OPEN  cv_1 FOR
+      SELECT ESP.CD_CODI_ESP ,
+             ESP.NO_NOMB_ESP ,
+             CASE 
+                  WHEN RESP.ID_IDEN_USUA IS NULL THEN '0'
+                  ELSE '1'
+             END SELECTED  
+        FROM ESPECIALIDADES ESP
+               LEFT JOIN R_USU_ESP RESP   ON ESP.CD_CODI_ESP = RESP.CD_CODI_ESP
+               AND RESP.ID_IDEN_USUA = v_ID_IDEN_USUA ;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

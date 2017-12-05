@@ -1,0 +1,30 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_ELIMINAR_RES_LAB
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_NU_AUTO_RELAB IN NUMBER
+)
+AS
+
+BEGIN
+
+    --todo: insertar antes de borrar
+    INSERT INTO RESERVA_LAB_AUD_ELIM( 
+        HORA_INICIO_RLABAE, HORA_FINAL_RLABAE, 
+        ES_GRUPAL_RLABAE, NU_AUTO_ESP_RLABAE, 
+        CD_CODI_MED_RES_RLABAE, FECHA_ELIM_RLABAE )
+          (SELECT HORA_INICIO_RLAB, HORA_FINAL_RLAB ,
+              ES_GRUPAL_RLAB , NU_AUTO_ESP_RLAB ,
+              CD_CODI_MED_RES_RLAB , SYSDATE 
+          FROM RESERVA_LAB 
+          WHERE  NU_AUTO_RELAB = v_NU_AUTO_RELAB );
+
+
+    DELETE RESERVA_LAB
+    WHERE  NU_AUTO_RELAB = v_NU_AUTO_RELAB;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

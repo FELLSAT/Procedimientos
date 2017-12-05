@@ -1,0 +1,20 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_ACTUALIZAR_FECHA_CARGO /*PROCEDIMIENTO ACTUALIZAR CARGOS*/
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_FECHA IN DATE,
+  v_CD_CIT_MED IN NUMBER
+)
+AS
+
+BEGIN
+
+   UPDATE MOVI_CARGOS
+      SET FE_FECH_MOVI = v_FECHA
+    WHERE  NU_NUME_MOVI = v_CD_CIT_MED;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

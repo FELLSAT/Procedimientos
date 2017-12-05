@@ -1,0 +1,33 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_NRO_CITAS
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+    v_CONVENIO IN NUMBER,
+    v_ESPECIALIDAD IN VARCHAR2,
+    v_DEPENDENCIA IN VARCHAR2,
+    v_SERVICIO IN VARCHAR2,
+    v_INICIO IN DATE,
+    v_FIN IN DATE,
+    cv_1 OUT SYS_REFCURSOR
+)
+AS
+
+BEGIN
+
+    OPEN  cv_1 FOR
+        SELECT COUNT(NU_NUME_CIT)  NRO_CITAS  
+        FROM CITAS_MEDICAS 
+        INNER JOIN MOVI_CARGOS MC   
+            ON MC.NU_NUME_MOVI = NU_NUME_MOVI_CIT
+        WHERE  FE_FECH_CIT >= v_INICIO
+            AND FE_FECH_CIT <= v_FIN
+            AND NU_NUME_CONV_CIT = v_CONVENIO
+            AND CD_CODI_ESP_CIT = v_ESPECIALIDAD
+            AND CD_CODI_SER_CIT = v_SERVICIO
+            AND MC.CD_CODI_CECO_MOVI = v_DEPENDENCIA ;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

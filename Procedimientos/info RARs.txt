@@ -1,0 +1,183 @@
+Disaradores:
+	- Hace falta 1 disparador
+		-CITAS_ANULADAS_ChangeTracking
+Funciones:
+	-Todo completo
+
+Parte 1: 
+	- Hace falta 1 procedimiento: 
+		-H3i_SP_CREA_TRIGGERS_ACTUALIZA
+
+Parte 2:
+	- Hacen falta 2 procedimientos: 
+		-H3i_SP_CONSULTA_ELEMENTOS: llama un sp que tambien presenta problemas H3i_SP_HIMS_CONSULTA_ELEMENTOS
+		-H3i_SP_EDITAR_PROGRAMA_SALUD_UNAL.
+	- 1 Funcion terminadas. 
+		-CalcularEdad
+		
+Parte 3:
+	- Hacen falta 2 procedimientos:
+		-H3i_SP_OBT_PACIENTES_ASIG_CAMA
+		-H3i_SP_RPT_PAI_NOPAI_P
+	- 1 Funcion terminada. 
+		-RECUPERARNUMEROSVARCHAR
+			-POSICIONCARACTERGUION
+			-POSICIONCARACTERNONUM
+
+Parte 4:
+	- Todo completo
+	- 1 funcion corregida de la parte 2
+		-CalcularEdad
+
+Parte 5: 
+	- Todo completo
+	- 2 Tablas modificadas
+		-GRAF_ODONTO
+		-HIST_MEDI
+
+Parte 6:
+	-Hacen falta 3 procedimientos
+		-H3i_SP_PERSONAS_ATENDIDAS_SALUD_OCUPA
+		-H3i_SP_GUARDA_ANOTACION
+		-H3i_SP_OBT_APLIC_QUIMIO
+	-1 funcion terminada:
+		-Mostrartipodocumento
+	-1 vista creada
+		-V_DATOS_HISTCLINICA
+	-4 Tablas creadas:
+		-R_ITBU_DIAG
+		-R_FINA_DIAG
+		-ITEM_BUSQUEDAAACTIVA
+		-FICHA_NOTIFICACION
+
+Parte 7:
+	-Hacen falta 3 procedimientos
+		-H3i_SP_GUARDA_PARTO
+		-H3i_SP_GUARDA_PARTO_FECHA_MAYOR
+		-H3i_SP_ELIMINAR_ORDEN_SERVICIO
+	-1 Funcion terminada
+		- FN_VALORCONCEPTOHC
+
+Parte 8:
+	-Hacen falta 3 procedimientos
+		-H3i_SP_HC_LISTARFORMATOSxDB_EXT
+		-H3i_ELIM_IMAGEN_ODONTO
+		-H3i_SP_OBTENER_INDGINGIV
+
+Parte 9:
+	-Todo completo
+
+Parte 10:
+	-Hacen falta 3 procedimientos
+		-H3i_SP_CONSULTA_PACTOTALPYP
+		-H3i_SP_CONSULTA_AGENDAEXTRADIA
+		-H3i_SP_CONSULTA_AGENDADIA_ESTAUT
+
+Parte 11:
+	-Hace falta 1 procedimiento
+		-H3i_SP_VALCRUCEHORA_PERS
+	- 1 funcion terminada
+		-FiltroServTurno
+
+Parte 12:
+	-Todo completo
+
+Parte 13:
+	Hacen falta 3 procedimientos 
+		-H3i_SP_CONS_CAR_FACT_PAC
+		-H3i_SP_ACTUALIZA_CARGO
+		-H3i_SP_CONS_CARG_DESP_FORM
+
+
+Parte 14:
+	- Faltan 6 procedimientos
+		-H3i_SP_CONSULTA_DATOS_DFT_LABORATORIO
+		-H3i_SP_CONSULTA_DOSIS_MEDICAMENTO_DEVUELTO
+		-H3i_SP_CREA_DETALLE_ELEMENTOS1
+		-H3i_SP_CONS_PENDIENTES_MED_PAC
+		-H3i_SP_LISTAR_REGADSC_NORECEP
+		-H3I_SP_CONS_VALOR_SERVICIOS
+
+Parte 14 C:
+	- Faltan 6 procedimientos
+		-H3i_ICEBERGARTICULOS_CON
+		-H3i_SP_GUARDAR_MENSAJE_HL7_DFT
+		-H3i_SP_CONSULTAR_DATOS_FACTURA_SAFIX
+		-H3i_SP_ACTUALIZA_LABORATORIO
+		-H3i_SP_CONS_SERVS_PENDIENTES
+		-H3I_SP_CONS_VALOR_COPAGO_SERV
+
+Parte 14 N: 
+	-Hacen falta 10 procedimientos:
+		-H3i_ICEBERGFACONXNUMFAC_CON
+		-H3i_SP_CONSULTA_DIAGNOSTICOS_LABORATORIO
+		-H3i_SP_CONSULTAR_NUMERO_CITA_SAFIX
+		-H3i_SP_GUARDAR_REPUESTA_REQUISICION_PRUEBAS
+		-H3i_SP_CONSULTA_LABORATORIO
+		-H3i_SP_CONS_VAL_COPAGO_MED_INS
+		-H3i_SP_OBT_NUM_CONC
+		-H3i_SP_RECEPC_REGADSCRITO
+		-H3i_SP_OBTENER_ENCAB_FACT_CREDITO
+		-H3i_SP_CONS_SERVS_PENDIENTES_AUTORIZACION
+
+Parte 15: 
+	-Hacen falta 3 procedimientos:
+		-H3i_SP_RIPS_TEMP_ARCHIVO_
+		-H3i_SP_CREA_RIPS_USUARIO_AUX
+		-H3i_SP_AUDI_OBT_ADJUNTOS_DOCUM
+
+Parte 15 C:
+	-Hacen falta 3 procedimeintos:
+		-H3i_SP_CREA_RIPS_USUARIO
+		-H3i_SP_ELIMINAR_RIPS_USUARIO_AUX
+		-H3i_SP_AUDI_INS_ADJUNT_DOCUM
+
+Parte 15 N:
+	-Hacen falta 2 procedimientos:
+		-H3I_SP_FACTURAS_RIPS_CON
+		-H3i_SP_PASAR_AUX_RIPS_USUARIO
+
+
+Parte 16:
+	-Hace falta 3 procedimientos
+		-H3i_SP_AUDIT_CONS_DOCXUSUARIO_
+		-H3i_SP_REP_TRAB_AUDI_FECH_REGAUDI
+		-H3i_SP_AUDIT_INS_RESP_MED_GLOS
+	-Tablas
+		-Creadas
+			-AUDITAR_REG_FILTRO_SESION
+		-Modificadas
+			-AUDITAR_REGISTRO_GLOSADO
+			-AUDITAR_RESPUESTA_DOCU_OBJET
+	- 1 Funcion terminada
+		-FN_DocumentosPorCodigo
+
+Parte 17:
+	-Hacen falta 8 procedimientos
+		-SP_DEVOLUCION_DEPENDENCIA_ICEBERG
+		-H3i_SP_APLICAR_DEVOLU_ELE
+		-H3i_SP_SALIDA_ALMACEN
+		-H3i_SP_CREA_SALIDA_ALMACEN
+		-H3i_SP_CONSULTAR_BARRIO_CON_BARRIO_ALTERNO
+		-H3i_SP_GUARDAR_REPUESTA_FACTURA
+		-H3i_SP_CREAR_IND_VAR_PAR
+		-H3i_SP_OBTENER_IND_VAR_PAR
+	- 1 funcion terminada
+		-H3i_FN_CONVERTIR_VALOR_LETRAS
+	- 1 tabla modificada
+		-PACIENTES
+
+Parte 18:
+	-Hacen falta 1 procedimiento
+		-H3i_SP_CONSULTAR_CODIGO_ALTERNATIVO_BARRIO
+
+Parte 19:
+	-Hacen falta 3 procedimientos
+		-H3i_SP_INDI_DIAG_MAY_COS
+		-H3i_SP_INDI_TOT_PER_CONS
+		-H3i_SP_PAC_MAYOR_COSTO
+
+Vistas:
+	-Todo completo
+
+

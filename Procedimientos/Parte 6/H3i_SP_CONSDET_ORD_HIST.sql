@@ -1,0 +1,44 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_CONSDET_ORD_HIST
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_NUMHICL IN NUMBER,
+  v_NUMEVO IN NUMBER DEFAULT 0 ,
+  cv_1 OUT SYS_REFCURSOR
+)
+AS
+
+BEGIN
+
+   OPEN  cv_1 FOR
+      SELECT S.CD_CODI_SER ,
+             UPPER(S.NO_NOMB_SER) NO_NOMB_SER  ,
+             TO_NUMBER(NVL(S.NU_NOPOS_SER, 0)) NU_NOPOS_SER  ,
+             TO_NUMBER(NU_NUME_IND_SER) NU_NUME_IND_SER  ,
+             HP.NU_CANT_HPRO ,
+             HP.FE_FECH_HPRO ,
+             HP.DE_INDI_HPRO ,
+             NVL(HP.NU_NUME_MOVI_HPRO, 0) NU_NUME_MOVI_HPRO  ,
+             NVL(HP.NU_NUME_LABO_HPRO, 0) NU_NUME_LABO_HPRO  ,
+             E.CD_CODI_ESP ,
+             E.NO_NOMB_ESP ,
+             TO_NUMBER(NU_OPCI_SER) NU_OPCI_SER  ,
+             TO_NUMBER(HP.NU_NUME_HPRO) NU_NUME_HPRO ,
+             NU_ORDE_HPRO 
+        FROM HIST_PROC HP
+               INNER JOIN HISTORIACLINICA H   ON HP.NU_NUME_HICL_HPRO = H.NU_NUME_HICL
+               INNER JOIN LABORATORIO L   ON L.NU_NUME_LABO = H.NU_NUME_LABO_HICL
+               INNER JOIN MOVI_CARGOS M   ON M.NU_NUME_MOVI = L.NU_NUME_MOVI_LABO
+               INNER JOIN SERVICIOS S   ON S.CD_CODI_SER = HP.CD_CODI_SER_HPRO
+               LEFT JOIN HIST_PROCONS HC   ON HP.NU_NUME_HPRO = HC.NU_NUME_HPRO_HPCO
+               LEFT JOIN ESPECIALIDADES E   ON HC.CD_CODI_ESP_HPCO = E.CD_CODI_ESP
+       WHERE  NU_ESTA_MOVI <> 2
+                AND NU_ESTA_LABO <> 2
+                AND HP.NU_NUME_HICL_HPRO = v_NUMHICL
+                AND HP.NU_NUME_HEVO_HPRO = v_NUMEVO ;
+
+ EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;

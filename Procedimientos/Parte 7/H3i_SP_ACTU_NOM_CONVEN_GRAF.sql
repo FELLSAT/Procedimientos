@@ -1,0 +1,22 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_ACTU_NOM_CONVEN_GRAF
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+	V_NU_NUME_IMAGEN IN NUMBER,
+	V_NOMBRE_IMG IN VARCHAR2
+)
+	
+AS
+
+BEGIN
+
+	 UPDATE IMAGEN_CONV
+	 SET NOMBRE_IMG = V_NOMBRE_IMG
+	 WHERE NU_NUME_IMAGEN = V_NU_NUME_IMAGEN;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;
+

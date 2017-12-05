@@ -1,0 +1,23 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_ANUALAFILIA_PAC
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+  v_NumHIST IN VARCHAR2
+)
+AS
+
+BEGIN
+
+   --SE ANULAN TODAS LAS AFILIACIONES ACTIVAS DEL PACIENTE
+   UPDATE R_PAC_EPS
+      SET NU_ESTA_REP = 1,
+          NU_ESTA_RPE = 0
+    WHERE  NU_HIST_PAC_RPE = v_NumHIST
+     AND NU_ESTA_REP = 0
+     AND NU_ESTA_RPE = 1;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END H3i_SP_ANUALAFILIA_PAC;

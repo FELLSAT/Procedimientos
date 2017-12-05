@@ -1,0 +1,32 @@
+CREATE OR REPLACE PROCEDURE H3i_SP_RECUPERAR_NUM_REMISION
+ -- =============================================      
+ -- Author:  FELIPE SATIZABAL
+ -- =============================================
+(
+    cv_1 OUT SYS_REFCURSOR
+)
+AS
+   v_ID_CONTROL VARCHAR2(50) := 'CONSEREMI';
+   v_NUM_REMISION NUMBER(10,0) := 0;
+
+BEGIN
+
+    SELECT (VL_VALO_CONT + 1) 
+    INTO v_NUM_REMISION
+    FROM CONTROL 
+    WHERE  CD_CONC_CONT = v_ID_CONTROL;
+
+
+    OPEN  cv_1 FOR
+        SELECT (VL_VALO_CONT + 1) NUM_REMISION  
+        FROM CONTROL 
+        WHERE  CD_CONC_CONT = v_ID_CONTROL ;
+        
+    UPDATE CONTROL
+    SET VL_VALO_CONT = v_NUM_REMISION
+    WHERE  CD_CONC_CONT = v_ID_CONTROL;
+
+EXCEPTION 
+    WHEN OTHERS 
+        THEN RAISE_APPLICATION_ERROR(SQLCODE,SQLERRM);
+END;
